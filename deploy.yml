@@ -18,7 +18,7 @@ jobs:
         env:
           CI: true
       - name: Deploy to production
-        uses: mboretto/deploy-to-github-pages-action@master
+        uses: mboretto/telegram-bot-vue-wep-app@master
         env:
           AUTHOR: mboretto
           BUILD_PATH: dist
