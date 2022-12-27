@@ -19,7 +19,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppI
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
 TOKEN = 'yourbottoken'
-URL = 'https://youwebsitelink.app/'
+URL = 'https://mboretto.github.io/telegram-bot-vue-wep-app/'
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
