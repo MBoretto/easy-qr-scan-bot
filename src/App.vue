@@ -13,7 +13,10 @@
      isExpanded: {{ TWA.isExpanded }} <br>
      viewportHeight: {{ TWA.viewportHeight }} <br>
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
-     headerColor: {{ TWA.headerColor }} <br>
+
+     <label for="head">headerColor: {{ TWA.headerColor }}
+       <input type="color" id="head" name="head" :value="TWA.headerColor" disabled>
+     </label> <br>
      backgroundColor: {{ TWA.backgroundColor }} <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
 
@@ -95,7 +98,7 @@ export default {
       this.TWA.showAlert('Theme has changed');
     },
     viewportChanged() {
-      this.TWA.sshowAlert('Viewport has changed');
+      this.TWA.showAlert('Viewport has changed');
     },
     mainButtonClicked() {
       this.TWA.showAlert('Main button was pressed');
@@ -110,9 +113,9 @@ export default {
     invoiceClosed() {
       this.TWA.showAlert('Invoice was closed');
     },
-    popupClosed() {
-      this.TWA.showAlert('Popup was closed');
-    },
+    //popupClosed() {
+    //  this.TWA.showAlert('Popup was closed');
+    //},
     // End of callbacks
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
@@ -159,36 +162,42 @@ export default {
       this.TWA.HapticFeedback.impactOccurred(this.style_selected);
     },
     showPopup() {
-        const par = {
-                      title: "Popup title",
-                      message: "Popup with default, ok and close buttons",
-                      buttons: [
-                        {id: "default", type: "default", text: "default"},
-                        {id: "ok", type: "ok", text: "ok"},
-                        {id: "close", type: "close", text: "close"}
-                      ]
-                    };
+      const par = {
+                    title: "Popup title",
+                    message: "Popup with default, ok and close buttons",
+                    buttons: [
+                      {id: "default", type: "default", text: "default"},
+                      {id: "ok", type: "ok", text: "ok"},
+                      {id: "close", type: "close", text: "close"}
+                    ]
+                  };
 
-        TWA.showPopup(par);
+      this.TWA.showPopup(par);
     },
     showPopup2() {
-        const par = {
-                      title: "Popup title",
-                      message: "Popup with cancel and destrucitve buttons",
-                      buttons: [
-                        {id: "cancel", type: "cancel", text: "cancel"},
-                        {id: "destructive", type: "destructive", text: "destructive"}
-                      ]
-                    };
+      const par = {
+                    title: "Popup title",
+                    message: "Popup with cancel and destrucitve buttons",
+                    buttons: [
+                      {id: "cancel", type: "cancel", text: "cancel"},
+                      {id: "destructive", type: "destructive", text: "destructive"}
+                    ]
+                  };
 
-        TWA.showPopup(par);
+      this.TWA.showPopup(par);
     },
-
   }
 }
 </script>
 
 
 <style scoped>
-
+.square {
+  height: 15px;
+  width: 15px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #000000;
+  background-color: #FFFFFF;
+}
 </style>
