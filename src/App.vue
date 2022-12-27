@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="main">
     <h3>Window Control</h3>
     <b>isExpanded</b>: {{ TWA.isExpanded }}
     <button @click="TWA.expand()">Expand</button>
@@ -230,7 +230,7 @@ bg_color            .
 secondary_bg_color  var(--tg-theme-secondary-bg-color)
 link_color          var(--tg-theme-link-color).
 */
-body {
+#main {
   background-color: var(--tg-theme-bg-color, white);
   color: var(--tg-theme-text-color, black);
 }
