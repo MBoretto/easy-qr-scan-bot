@@ -160,16 +160,8 @@ export default {
     },
     showPopup() {
         const par = {
-                      title: 'Popup title',
-                      message: 'Popup message'
-                      ]
-                    };
-        TWA.showPopup(par);
-    },
-    showPopup() {
-        const par = {
                       title: "Popup title",
-                      message: "Popup messagei",
+                      message: "Popup with default, ok and close buttons",
                       buttons: [
                         {id: "default", type: "default", text: "default"},
                         {id: "ok", type: "ok", text: "ok"},
@@ -182,9 +174,9 @@ export default {
     showPopup2() {
         const par = {
                       title: "Popup title",
-                      message: "Popup message",
+                      message: "Popup with cancel and destrucitve buttons",
                       buttons: [
-                        {id: "cancel", type: "cancel", text: "cancel"}
+                        {id: "cancel", type: "cancel", text: "cancel"},
                         {id: "destructive", type: "destructive", text: "destructive"}
                       ]
                     };
