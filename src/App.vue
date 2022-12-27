@@ -5,8 +5,8 @@
     <button @click="TWA.expand()">Expand</button>
     <button @click="TWA.close()">Close</button><br>
 
-    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
-    <b>isClosingConfirmationEnabled</b>: {{ TWA.isClosingConfirmationEnabled }}<br>
+    <b>isClosingConfirmationEnabled</b>: {{ TWA.isClosingConfirmationEnabled }}
+    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button><br>
 
     <b>viewportHeight</b>: {{ TWA.viewportHeight }} <br>
     <b>viewportStableHeight</b>: {{ TWA.viewportStableHeight }} <br>
@@ -40,11 +40,9 @@
        </select>
      </label> <br>
 
-    <h3>Data received (doesn't seems to be reactive)</h3>
+    <h3>Data received</h3>
     <b>initData</b>: {{ TWA.initData }} <br>
     <b>initDataUnsafe</b>: <pre>{{ TWA.initDataUnsafe }}</pre><br>
-
-
 
     <h3>Bot API version available</h3>
     <b>version</b>: {{ TWA.version }} <br>
@@ -105,12 +103,16 @@ export default {
   created() {
     // Binnding function to all the event types
     this.TWA.onEvent('themeChanged', this.themeChanged);
-    this.TWA.onEvent('viewportChanged', this.viewportChanged);
+    // triggered too often
+    //this.TWA.onEvent('viewportChanged', this.viewportChanged);
     this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
     this.TWA.onEvent('backButtonClicked', this.backButtonClicked);
+    // I couldn't trigger this yet
     this.TWA.onEvent('settingsButtonClicked', this.settingsButtonClicked);
     this.TWA.onEvent('invoiceClosed', this.invoiceClosed);
-    this.TWA.onEvent('popupClosed', this.popupClosed);
+    // Seems that the popup is an alter itself
+    // Commenting this otherwise I'm stuck in a loop
+    //this.TWA.onEvent('popupClosed', this.popupClosed);
   },
   mounted() {
     // What is the best? mounted or created??
@@ -121,10 +123,9 @@ export default {
     themeChanged() {
       this.TWA.showAlert('Theme has changed');
     },
-    // triggered too often
-    //viewportChanged() {
-    //  this.TWA.showAlert('Viewport has changed');
-    //},
+    viewportChanged() {
+      this.TWA.showAlert('Viewport has changed');
+    },
     mainButtonClicked() {
       this.TWA.showAlert('Main button was pressed');
       window.Telegram.WebApp.showAlert('Main button was pressed version2');
@@ -138,11 +139,9 @@ export default {
     invoiceClosed() {
       this.TWA.showAlert('Invoice was closed');
     },
-    // Seems that the popup is an alter itself
-    // Commenting this otherwise I'm stuck in a loop
-    //popupClosed() {
-    //  this.TWA.showAlert('Popup was closed');
-    //},
+    popupClosed() {
+      this.TWA.showAlert('Popup was closed');
+    },
     // End of callbacks
     changeHeaderColor(event) {
         const color = event.target.value;
@@ -227,12 +226,25 @@ export default {
 
 
 <style scoped>
-.square {
-  height: 15px;
-  width: 15px;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #000000;
-  background-color: #FFFFFF;
+
+/*
+bg_color            var(--tg-theme-bg-color).
+secondary_bg_color  var(--tg-theme-secondary-bg-color)
+hint_color          var(--tg-theme-hint-color).
+link_color          var(--tg-theme-link-color).
+*/
+h3 {
+  color: var(--tg-theme-text-color, black);
+}
+button {
+  background-color: var(--tg-theme-button-color, #008CBA);
+  border: 5px;
+  color: var(--tg-theme-button-text-color, black);
+  padding: 15px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
 }
 </style>
