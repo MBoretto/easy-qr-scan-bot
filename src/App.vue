@@ -4,15 +4,31 @@
     <button @click="TWA.expand()">Expand</button>
     <button @click="TWA.close()">Close</button><br>
 
+
+    <h3>Theme colors</h3>
+    colorScheme: {{ TWA.colorScheme }} <br>
+    themeParams:<br>
+    <div v-for="(key, rgb_color) in TWA.themeParams">
+     <label for="head">{{ name }}: {{ rgb_color }}
+       <input type="color" :value="rgb_color" disabled>
+     </label> <br>
+    </div>
+
     <h3>Data received (doesn't seems to be reactive)</h3>
      initData: {{ TWA.initData }} <br>
      initDataUnsafe: <pre>{{ TWA.initDataUnsafe }}</pre><br>
      version: {{ TWA.version }} <br>
-     colorScheme: {{ TWA.colorScheme }} <br>
-     themeParams: <pre>{{ TWA.themeParams }}</pre> <br>
      isExpanded: {{ TWA.isExpanded }} <br>
      viewportHeight: {{ TWA.viewportHeight }} <br>
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
+
+     <label for="head">headerColor:
+       <select v-model="style_selected" @input="handleColor">
+         <option disabled value="">Please select one</option>
+         <option>bg_color</option>
+         <option>secondary_bg_color</option>
+       </select>
+     </label> <br>
 
      <label for="head">headerColor: {{ TWA.headerColor }}
        <input type="color" id="head" name="head" :value="TWA.headerColor" @input="handleColor">
@@ -20,6 +36,7 @@
      <label for="head">backgroundColor: {{ TWA.backgroundColor }}
        <input type="color" id="head" name="head" :value="TWA.backgroundColor" disabled>
      </label> <br>
+
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
 
     <h3>Functions</h3>
