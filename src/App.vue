@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h3>Interface Control:</h3>
+    <h3>Interface Control</h3>
     <button @click="TWA.expand()">Expand</button>
     <button @click="TWA.close()">Close</button><br>
 
-    <h3>Data recieved:</h3>
+    <h3>Data received (doesn't seems to be reactive)</h3>
      initData: {{ TWA.initData }} <br>
      initDataUnsafe: <pre>{{ TWA.initDataUnsafe }}</pre><br>
      version: {{ TWA.version }} <br>
@@ -16,6 +16,9 @@
      headerColor: {{ TWA.headerColor }} <br>
      backgroundColor: {{ TWA.backgroundColor }} <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
+isVersionAtLeast(version)
+
+    <h3>Functions</h3>
 
      <select v-model="style_selected">
       <option disabled value="">Please select one</option>
@@ -28,6 +31,7 @@
     <button @click="hapticImpact()">Haptic Feedback ({{ style_selected }})</button><br>
     <button @click="TWA.openLink('https://github.com/MBoretto/telegram-bot-vue-wep-app')">Open link in an external browser</button><br>
 
+    isVersionAtLeast('6.2'): {{ TWA.isVersionAtLeast('6.2') }} <br>
 
     <button @click="toggleBackButton()">Show/hide Back Button</button><br>
     <button @click="toggleMainButton()">Show/hide Main Button</button>
@@ -37,6 +41,11 @@
     <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
 
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
+    <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
+    <button @click="TWA.showPopup({title: 'Popup title', message: 'Popup message'})">Show Popup message</button><br>
+showPopup(paramscallback])
+showAlert(message[, callback])
+showConfirm(message[, callback]) NEW
     <br>
   </div>
 </template>
@@ -95,6 +104,7 @@ export default {
     },
     mainButtonClicked() {
       TWA.showAlert('Main button was pressed');
+      window.Telegram.WebApp.showAlert('Main button was pressed version2');
     },
     backButtonClicked() {
       TWA.showAlert('back button was clicked');

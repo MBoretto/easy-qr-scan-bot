@@ -39,4 +39,5 @@ After doing that, change accordingly the Web App link in the `web-app-launcher.p
 
 ## Issues
 - Seems to me that the Haptic Feedback is not working, also I don't feel any difference between styles
-- `onEvent('popupClosed', afunction )` I coundn't menage to make it work with parameters 
+- `onEvent('popupClosed', afunction )` I coundn't menage to make it work with parameters
+- variables like isClosingConfirmationEnabled are not reactive. Should them be monitored with watched?
