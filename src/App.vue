@@ -9,8 +9,8 @@
     colorScheme: {{ TWA.colorScheme }} <br>
     themeParams:<br>
     <div v-for="(key, rgb_color) in TWA.themeParams">
-     <label for="head">{{ name }}: {{ rgb_color }}
-       <input type="color" :value="rgb_color" disabled>
+     <label for="head">{{ rgb_color }}: {{ key }}
+       <input type="color" :value="key" disabled>
      </label> <br>
     </div>
 
@@ -22,19 +22,22 @@
      viewportHeight: {{ TWA.viewportHeight }} <br>
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
 
-     <label for="head">headerColor:
-       <select v-model="style_selected" @input="handleColor">
+     <label for="header">headerColor: {{ TWA.headerColor }}
+       <input type="color" name="header" :value="TWA.headerColor" disabled>
+       <select v-model="style_selected" @input="changeHeaderColor">
          <option disabled value="">Please select one</option>
          <option>bg_color</option>
          <option>secondary_bg_color</option>
        </select>
      </label> <br>
 
-     <label for="head">headerColor: {{ TWA.headerColor }}
-       <input type="color" id="head" name="head" :value="TWA.headerColor" @input="handleColor">
-     </label> <br>
-     <label for="head">backgroundColor: {{ TWA.backgroundColor }}
-       <input type="color" id="head" name="head" :value="TWA.backgroundColor" disabled>
+     <label for="background"> backgroundColor: {{ TWA.backgroundColor }}
+       <input type="color" name="background" :value="TWA.backgroundColor" disabled>
+       <select v-model="style_selected" @input="changeBackgroundColor">
+         <option disabled value="">Please select one</option>
+         <option>bg_color</option>
+         <option>secondary_bg_color</option>
+       </select>
      </label> <br>
 
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
@@ -116,6 +119,7 @@ export default {
     themeChanged() {
       this.TWA.showAlert('Theme has changed');
     },
+    // triggered too often
     //viewportChanged() {
     //  this.TWA.showAlert('Viewport has changed');
     //},
@@ -132,13 +136,19 @@ export default {
     invoiceClosed() {
       this.TWA.showAlert('Invoice was closed');
     },
+    // Seems that the popup is an alter itself
+    // Commenting this otherwise I'm stuck in a loop
     //popupClosed() {
     //  this.TWA.showAlert('Popup was closed');
     //},
     // End of callbacks
-    handleColor() {
+    changeHeaderColor(event) {
         const color = event.target.value;
         this.TWA.setHeaderColor(color);
+    },
+    changeBackgroundColor(event) {
+        const color = event.target.value;
+        this.TWA.setBackgroundColo(color);
     },
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
