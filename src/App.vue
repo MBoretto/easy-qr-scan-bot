@@ -16,7 +16,6 @@
      headerColor: {{ TWA.headerColor }} <br>
      backgroundColor: {{ TWA.backgroundColor }} <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
-isVersionAtLeast(version)
 
     <h3>Functions</h3>
 
@@ -38,14 +37,12 @@ isVersionAtLeast(version)
     <button @click="toggleEnableMainButton()">Enable/Disable Main Button</button>
     <button @click="toggleProgressMainButton()">Show/Hide Main Button progress</button><br>
 
-    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
+    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button><br>
 
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
     <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
-    <button @click="TWA.showPopup({title: 'Popup title', message: 'Popup message'})">Show Popup message</button><br>
-showPopup(paramscallback])
-showAlert(message[, callback])
-showConfirm(message[, callback]) NEW
+    <button @click="showPopup()">Show Popup message</button><br>
+    <button @click="showPopup2()">Show Popup message2</button><br>
     <br>
   </div>
 </template>
@@ -76,8 +73,6 @@ export default {
   data() {
     return {
       style_selected: 'medium',
-      app_event_description: null,
-      back_button_visible: true,
     };
   },
   created() {
@@ -97,26 +92,26 @@ export default {
   methods: {
     // attached with onEvent function during created
     themeChanged() {
-      TWA.showAlert('Theme has changed');
+      this.TWA.showAlert('Theme has changed');
     },
     viewportChanged() {
-      TWA.showAlert('Viewport has changed');
+      this.TWA.sshowAlert('Viewport has changed');
     },
     mainButtonClicked() {
-      TWA.showAlert('Main button was pressed');
+      this.TWA.showAlert('Main button was pressed');
       window.Telegram.WebApp.showAlert('Main button was pressed version2');
     },
     backButtonClicked() {
-      TWA.showAlert('back button was clicked');
+      this.TWA.showAlert('back button was clicked');
     },
     settingsButtonClicked() {
-      TWA.showAlert('Settings button pressed');
+      this.TWA.showAlert('Settings button pressed');
     },
     invoiceClosed() {
-      TWA.showAlert('Invoice was closed');
+      this.TWA.showAlert('Invoice was closed');
     },
     popupClosed() {
-      TWA.showAlert('Popup was closed');
+      this.TWA.showAlert('Popup was closed');
     },
     // End of callbacks
     toggleBackButton() {
@@ -163,6 +158,40 @@ export default {
     hapticImpact() {
       this.TWA.HapticFeedback.impactOccurred(this.style_selected);
     },
+    showPopup() {
+        const par = {
+                      title: 'Popup title',
+                      message: 'Popup message'
+                      ]
+                    };
+        TWA.showPopup(par);
+    },
+    showPopup() {
+        const par = {
+                      title: "Popup title",
+                      message: "Popup messagei",
+                      buttons: [
+                        {id: "default", type: "default", text: "default"},
+                        {id: "ok", type: "ok", text: "ok"},
+                        {id: "close", type: "close", text: "close"}
+                      ]
+                    };
+
+        TWA.showPopup(par);
+    },
+    showPopup2() {
+        const par = {
+                      title: "Popup title",
+                      message: "Popup message",
+                      buttons: [
+                        {id: "cancel", type: "cancel", text: "cancel"}
+                        {id: "destructive", type: "destructive", text: "destructive"}
+                      ]
+                    };
+
+        TWA.showPopup(par);
+    },
+
   }
 }
 </script>
