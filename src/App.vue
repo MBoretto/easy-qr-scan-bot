@@ -27,7 +27,7 @@
       <option>soft</option>
     </select>
     <button @click="hapticImpact()">Haptic Feedback ({{ style_selected }})</button><br>
-    <button @click="TWA.openLink('https://www.google.com')">Open link in an external browser</button><br>
+    <button @click="TWA.openLink('https://github.com/MBoretto/telegram-bot-vue-wep-app')">Open link in an external browser</button><br>
 
 
     <button @click="toggleBackButton()">Show/hide Back Button</button><br>
@@ -38,8 +38,6 @@
     <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
 
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
-
-    
     <br>
   </div>
 </template>
@@ -91,7 +89,7 @@ export default {
     // }
     this.TWA.onEvent('themeChanged', this.displayAppEvent('Theme has chenged'));
     this.TWA.onEvent('viewportChanged', this.displayAppEvent('viewport has changed'));
-    this.TWA.onEvent('mainButtonClicked', this.mainButtonfunction);
+    this.TWA.onEvent('mainButtonClicked', this.mainButtonEvent, 'Main button was pressed!');
     this.TWA.onEvent('backButtonClicked', this.displayAppEvent('back button was clicked'));
     this.TWA.onEvent('settingsButtonClicked', this.displayAppEvent('Settings button pressed'));
     this.TWA.onEvent('invoiceClosed', this.displayAppEvent('Invoice was closed'));
@@ -102,9 +100,9 @@ export default {
     this.TWA.ready();
   },
   methods: {
-    mainButtonfunction() {
-      alert('Main button was pressed!!!!');
-      this.app_event_description = 'this.Main button was pressed!!!!';
+    mainButtonEvent(message) {
+      TWA.showAlert(message);
+      this.app_event_description = message;
     },
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
