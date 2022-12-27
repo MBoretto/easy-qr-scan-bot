@@ -6,7 +6,7 @@
     <button @click="TWA.close()">Close</button><br>
 
     <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
-    <b>isClosingConfirmationEnabled<b>: {{ TWA.isClosingConfirmationEnabled }}<br>
+    <b>isClosingConfirmationEnabled</b>: {{ TWA.isClosingConfirmationEnabled }}<br>
 
     <b>viewportHeight</b>: {{ TWA.viewportHeight }} <br>
     <b>viewportStableHeight</b>: {{ TWA.viewportStableHeight }} <br>
