@@ -15,9 +15,11 @@
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
 
      <label for="head">headerColor: {{ TWA.headerColor }}
-       <input type="color" id="head" name="head" :value="TWA.headerColor" disabled>
+       <input type="color" id="head" name="head" :value="TWA.headerColor" @input="handleColor">
      </label> <br>
-     backgroundColor: {{ TWA.backgroundColor }} <br>
+     <label for="head">backgroundColor: {{ TWA.backgroundColor }}
+       <input type="color" id="head" name="head" :value="TWA.backgroundColor" disabled>
+     </label> <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
 
     <h3>Functions</h3>
@@ -97,9 +99,9 @@ export default {
     themeChanged() {
       this.TWA.showAlert('Theme has changed');
     },
-    viewportChanged() {
-      this.TWA.showAlert('Viewport has changed');
-    },
+    //viewportChanged() {
+    //  this.TWA.showAlert('Viewport has changed');
+    //},
     mainButtonClicked() {
       this.TWA.showAlert('Main button was pressed');
       window.Telegram.WebApp.showAlert('Main button was pressed version2');
@@ -117,6 +119,10 @@ export default {
     //  this.TWA.showAlert('Popup was closed');
     //},
     // End of callbacks
+    handleColor() {
+        const color = event.target.value;
+        this.TWA.setHeaderColor(color);
+    },
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
         this.TWA.BackButton.hide();
