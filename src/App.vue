@@ -13,7 +13,7 @@
      isExpanded: {{ TWA.isExpanded }} <br>
      viewportHeight: {{ TWA.viewportHeight }} <br>
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
-     headerColor: {{ TWA.headerColor }} <div class="square" v-bind:style='{ background-color: {{ TWA.headerColo }} }'><div><br>
+     headerColor: {{ TWA.headerColor }} <br>
      backgroundColor: {{ TWA.backgroundColor }} <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
 
@@ -160,10 +160,4 @@ export default {
 
 <style scoped>
 
-.square {
-    width: 6px;
-    height: 6px;
-    border-color: black;
-    border-width: 1px;
-}
 </style>
