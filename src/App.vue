@@ -2,8 +2,7 @@
   <div>
     <h3>Interface Control:</h3>
     <button @click="TWA.expand()">Expand</button>
-    <button @click="TWA.close()">close</button><br>
-    Event on the app: {{ app_event_description }}
+    <button @click="TWA.close()">Close</button><br>
 
     <h3>Data recieved:</h3>
      initData: {{ TWA.initData }} <br>
@@ -14,7 +13,7 @@
      isExpanded: {{ TWA.isExpanded }} <br>
      viewportHeight: {{ TWA.viewportHeight }} <br>
      viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
-     headerColor: {{ TWA.headerColor }} <br>
+     headerColor: {{ TWA.headerColor }} <div class="square" v-bind:style='{ background-color: {{ TWA.headerColo }} }'><div><br>
      backgroundColor: {{ TWA.backgroundColor }} <br>
      isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
 
@@ -57,16 +56,6 @@
 //disableClosingConfirmation() NEW
 //onEvent(eventType, eventHandler)
 
-// Event types
-// themeChanged
-// viewportChanged
-// mainButtonClicked
-// backButtonClicked
-// settingsButtonClicked
-// invoiceClosed
-// popupClosed
-
-
 //offEvent(eventType, eventHandler)
 //sendData(data)
 //openTelegramLink(url)
@@ -83,27 +72,43 @@ export default {
     };
   },
   created() {
-    // function mainButtonfunction() {
-    //   alert('Main button was pressed!!!!');
-    //     this.app_event_description = 'Main button was pressed!!!!';
-    // }
-    this.TWA.onEvent('themeChanged', this.displayAppEvent('Theme has chenged'));
-    this.TWA.onEvent('viewportChanged', this.displayAppEvent('viewport has changed'));
-    this.TWA.onEvent('mainButtonClicked', this.mainButtonEvent, 'Main button was pressed!');
-    this.TWA.onEvent('backButtonClicked', this.displayAppEvent('back button was clicked'));
-    this.TWA.onEvent('settingsButtonClicked', this.displayAppEvent('Settings button pressed'));
-    this.TWA.onEvent('invoiceClosed', this.displayAppEvent('Invoice was closed'));
-    this.TWA.onEvent('popupClosed', this.displayAppEvent('Popup was closed'));
+    // Binnding function to all the event types
+    this.TWA.onEvent('themeChanged', this.themeChanged);
+    this.TWA.onEvent('viewportChanged', this.viewportChanged);
+    this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
+    this.TWA.onEvent('backButtonClicked', this.backButtonClicked);
+    this.TWA.onEvent('settingsButtonClicked', this.settingsButtonClicked);
+    this.TWA.onEvent('invoiceClosed', this.invoiceClosed);
+    this.TWA.onEvent('popupClosed', this.popupClosed);
   },
   mounted() {
     // What is the best? mounted or created??
     this.TWA.ready();
   },
   methods: {
-    mainButtonEvent(message) {
-      TWA.showAlert(message);
-      this.app_event_description = message;
+    // attached with onEvent function during created
+    themeChanged() {
+      TWA.showAlert('Theme has changed');
     },
+    viewportChanged() {
+      TWA.showAlert('Viewport has changed');
+    },
+    mainButtonClicked() {
+      TWA.showAlert('Main button was pressed');
+    },
+    backButtonClicked() {
+      TWA.showAlert('back button was clicked');
+    },
+    settingsButtonClicked() {
+      TWA.showAlert('Settings button pressed');
+    },
+    invoiceClosed() {
+      TWA.showAlert('Invoice was closed');
+    },
+    popupClosed() {
+      TWA.showAlert('Popup was closed');
+    },
+    // End of callbacks
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
         this.TWA.BackButton.hide();
@@ -148,15 +153,17 @@ export default {
     hapticImpact() {
       this.TWA.HapticFeedback.impactOccurred(this.style_selected);
     },
-    displayAppEvent(event_desc) {
-      return function () {
-        this.app_event_description = event_desc;
-      }
-    },
   }
 }
 </script>
 
 
 <style scoped>
+
+.square {
+    width: 6px;
+    height: 6px;
+    border-color: black;
+    border-width: 1px;
+}
 </style>
