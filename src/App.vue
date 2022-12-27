@@ -1,50 +1,57 @@
 <template>
   <div>
-    <h3>Interface Control</h3>
+    <h3>Window Control</h3>
+    <b>isExpanded</b>: {{ TWA.isExpanded }}
     <button @click="TWA.expand()">Expand</button>
     <button @click="TWA.close()">Close</button><br>
 
+    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button>
+    <b>isClosingConfirmationEnabled<b>: {{ TWA.isClosingConfirmationEnabled }}<br>
+
+    <b>viewportHeight</b>: {{ TWA.viewportHeight }} <br>
+    <b>viewportStableHeight</b>: {{ TWA.viewportStableHeight }} <br>
+
 
     <h3>Theme colors</h3>
-    colorScheme: {{ TWA.colorScheme }} <br>
-    themeParams:<br>
-    <div v-for="(key, rgb_color) in TWA.themeParams">
-     <label for="head">{{ rgb_color }}: {{ key }}
-       <input type="color" :value="key" disabled>
+    <b>colorScheme</b>: {{ TWA.colorScheme }} <br>
+    <b>themeParams</b>:<br>
+    <div v-for="(rgb_color, key) in TWA.themeParams">
+     <label for="head"><b>{{ key }}</b>: {{ rgb_color }}
+       <input type="color" :value="rgb_color" disabled>
      </label> <br>
     </div>
 
+    <h3>Web App colors</h3>
+     <label for="header"><b>headerColor</b>: {{ TWA.headerColor }}
+       <input type="color" name="header" :value="TWA.headerColor" disabled><br>
+       <select @input="changeHeaderColor">
+         <option disabled value="">Please select one</option>
+         <option>bg_color</option>
+         <option>secondary_bg_color</option>
+       </select>
+     </label> <br>
+
+     <label for="background"> <b>backgroundColor</b>: {{ TWA.backgroundColor }}
+       <input type="color" name="background" :value="TWA.backgroundColor" disabled><br>
+       <select @input="changeBackgroundColor">
+         <option disabled value="">Please select one</option>
+         <option>bg_color</option>
+         <option>secondary_bg_color</option>
+       </select>
+     </label> <br>
+
     <h3>Data received (doesn't seems to be reactive)</h3>
-     initData: {{ TWA.initData }} <br>
-     initDataUnsafe: <pre>{{ TWA.initDataUnsafe }}</pre><br>
-     version: {{ TWA.version }} <br>
-     isExpanded: {{ TWA.isExpanded }} <br>
-     viewportHeight: {{ TWA.viewportHeight }} <br>
-     viewportStableHeight: {{ TWA.viewportStableHeight }} <br>
+    <b>initData</b>: {{ TWA.initData }} <br>
+    <b>initDataUnsafe</b>: <pre>{{ TWA.initDataUnsafe }}</pre><br>
 
-     <label for="header">headerColor: {{ TWA.headerColor }}
-       <input type="color" name="header" :value="TWA.headerColor" disabled>
-       <select v-model="style_selected" @input="changeHeaderColor">
-         <option disabled value="">Please select one</option>
-         <option>bg_color</option>
-         <option>secondary_bg_color</option>
-       </select>
-     </label> <br>
 
-     <label for="background"> backgroundColor: {{ TWA.backgroundColor }}
-       <input type="color" name="background" :value="TWA.backgroundColor" disabled>
-       <select v-model="style_selected" @input="changeBackgroundColor">
-         <option disabled value="">Please select one</option>
-         <option>bg_color</option>
-         <option>secondary_bg_color</option>
-       </select>
-     </label> <br>
 
-     isClosingConfirmationEnabled: {{ TWA.isClosingConfirmationEnabled }} <br>
+    <h3>Bot API version available</h3>
+    <b>version</b>: {{ TWA.version }} <br>
+    <b>isVersionAtLeast('6.2')</b>: {{ TWA.isVersionAtLeast('6.2') }} <br>
 
-    <h3>Functions</h3>
-
-     <select v-model="style_selected">
+    <h3>Haptic Feedback</h3>
+    <select v-model="style_selected">
       <option disabled value="">Please select one</option>
       <option>light</option>
       <option>medium</option>
@@ -53,17 +60,15 @@
       <option>soft</option>
     </select>
     <button @click="hapticImpact()">Haptic Feedback ({{ style_selected }})</button><br>
+
+    <h3>Functions and buttons</h3>
     <button @click="TWA.openLink('https://github.com/MBoretto/telegram-bot-vue-wep-app')">Open link in an external browser</button><br>
-
-    isVersionAtLeast('6.2'): {{ TWA.isVersionAtLeast('6.2') }} <br>
-
     <button @click="toggleBackButton()">Show/hide Back Button</button><br>
     <button @click="toggleMainButton()">Show/hide Main Button</button>
     <button @click="toggleEnableMainButton()">Enable/Disable Main Button</button>
     <button @click="toggleProgressMainButton()">Show/Hide Main Button progress</button><br>
 
-    <button @click="toggleClosingDialog()">Enable/Disable Confirmation Dialog</button><br>
-
+    <h3>Popups</h3>
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
     <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
     <button @click="showPopup()">Show Popup message</button><br>
@@ -80,9 +85,6 @@
 //HapticFeedback
 
 // Methods
-//isVersionAtLeast(version)
-//setHeaderColor(color)
-//setBackgroundColor(color)
 //enableClosingConfirmation() NEW
 //disableClosingConfirmation() NEW
 //onEvent(eventType, eventHandler)
@@ -148,7 +150,7 @@ export default {
     },
     changeBackgroundColor(event) {
         const color = event.target.value;
-        this.TWA.setBackgroundColo(color);
+        this.TWA.setBackgroundColor(color);
     },
     toggleBackButton() {
       if (this.TWA.BackButton.isVisible) {
