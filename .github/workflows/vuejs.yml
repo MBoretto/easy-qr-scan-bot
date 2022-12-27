@@ -64,7 +64,7 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Static HTML export with Vuejs
-        run: ${{ steps.detect-package-manager.outputs.manager }} run build --base=/${{ github.event.repository.name }}/
+        run: ${{ steps.detect-package-manager.outputs.manager }} run build -- --base=/${{ github.event.repository.name }}/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
