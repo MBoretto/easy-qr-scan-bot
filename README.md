@@ -6,11 +6,12 @@ This projec it meant to explore the API functionalities that Telegram offers in 
 
 ## Getting started
 You need:
-- A telegram bot Api token, if you dont have any get at https://t.me/botfather
+- A telegram bot Api token, if you dont have any get it at https://t.me/botfather
 - A website to deploy a static app
 
 ## Clone and build the project
 Run:
+
     git clone https://github.com/MBoretto/telegram-bot-vue-wep-app.git
     cd telegram-bot-vue-wep-app/
     npm install
