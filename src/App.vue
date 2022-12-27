@@ -224,15 +224,19 @@ export default {
 }
 </script>
 
-
 <style scoped>
-
 /*
-bg_color            var(--tg-theme-bg-color).
+bg_color            .
 secondary_bg_color  var(--tg-theme-secondary-bg-color)
-hint_color          var(--tg-theme-hint-color).
 link_color          var(--tg-theme-link-color).
 */
+body {
+  background-color: var(--tg-theme-bg-color, white);
+  color: var(--tg-theme-text-color, black);
+}
+b {
+  color: var(--tg-theme-hint-color, black);
+}
 h3 {
   color: var(--tg-theme-text-color, black);
 }
