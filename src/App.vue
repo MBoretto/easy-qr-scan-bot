@@ -17,11 +17,6 @@
       <button @click="openLink()">{{ code }}</button>
       <!--<button @click="openLink()">copy to clipboard</button>-->
       </div>
-
-
-      <h3>Bot API version available</h3>
-      <b>version</b>:  <br>
-      <b>isVersionAtLeast('6.4')</b>: {{  }} <br>
     </div>
 
     <div v-if="!is_telegram_api_update">
@@ -61,10 +56,10 @@ export default {
       TWA.openLink(this.code);
     },
     processQRCode(data) {
+       this.code = data.data;
        this.hapticImpact();
        this.TWA.closeScanQrPopup();
        //this.TWA.showAlert(data.data);
-       this.code = data.data;
     },
     // End of callbacks
     showQRScanner() {
@@ -75,7 +70,7 @@ export default {
     },
     hapticImpact() {
       // light medium heavy rigid soft
-      this.TWA.HapticFeedback.impactOccurred(heavy);
+      this.TWA.HapticFeedback.impactOccurred("heavy");
     },
   }
 }
