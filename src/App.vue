@@ -146,8 +146,8 @@ export default {
       this.TWA.showAlert('Popup was closed');
     },
     processQRCode(data) {
-       this.TWA.showAlert(JSON.stringify(data));
        this.TWA.closeScanQrPopup();
+       this.TWA.showAlert(data.data);
     },
     // End of callbacks
     showQRScanner() {
