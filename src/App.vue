@@ -10,8 +10,10 @@
       <h3>Functions and buttons</h3>
       -->
 
-      <div v-if="code">{{ code }}
-        <button @click="openLink()">{{ code }}</button>
+      <div v-if="code">
+        <h3>QR code:</h3>
+        {{ code }}
+        <v-btn @click="openLink()">Open Link</v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
 
@@ -45,10 +47,13 @@ export default {
     // Binding function to all the event types
     //this.TWA.onEvent('themeChanged', this.themeChanged);
     this.TWA.MainButton.setText("Scan QR code");
-    this.TWA.MainButton.show();
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
     this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
     this.is_telegram_api_update = this.TWA.isVersionAtLeast('6.4');
+
+    if (this.is_telegram_api_update) {
+      this.TWA.MainButton.show();
+    }
   },
   mounted() {
     // What is the best? mounted or created??
