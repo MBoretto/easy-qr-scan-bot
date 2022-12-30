@@ -46,7 +46,7 @@
 
     <h3>Bot API version available</h3>
     <b>version</b>: {{ TWA.version }} <br>
-    <b>isVersionAtLeast('6.2')</b>: {{ TWA.isVersionAtLeast('6.2') }} <br>
+    <b>isVersionAtLeast('6.4')</b>: {{ TWA.isVersionAtLeast('6.4') }} <br>
 
     <h3>Haptic Feedback</h3>
     <select v-model="style_selected">
@@ -66,6 +66,8 @@
     <button @click="toggleEnableMainButton()">Enable/Disable Main Button</button>
     <button @click="toggleProgressMainButton()">Show/Hide Main Button progress</button><br>
 
+    <h3>QR scanner</h3>
+    <button @click="showQRScanner()">Show Alert</button><br>
     <h3>Popups</h3>
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
     <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
@@ -113,6 +115,7 @@ export default {
     // Seems that the popup is an alter itself
     // Commenting this otherwise I'm stuck in a loop
     //this.TWA.onEvent('popupClosed', this.popupClosed);
+    this.TWA.onEvent('qrTextReceived', this.processQRCode);
   },
   mounted() {
     // What is the best? mounted or created??
@@ -142,7 +145,17 @@ export default {
     popupClosed() {
       this.TWA.showAlert('Popup was closed');
     },
+    processQRCode(data) {
+       this.TWA.showAlert(data.text)
+       this.TWA.closeScanQrPopup();
+    },
     // End of callbacks
+    showQRScanner() {
+      const par = {
+          text: "Press to scan"
+        };
+      this.TWA.showScanQrPopup(par);
+    },
     changeHeaderColor(event) {
         const color = event.target.value;
         this.TWA.setHeaderColor(color);
