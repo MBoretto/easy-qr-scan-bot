@@ -12,8 +12,8 @@
 
       <div v-if="code">
         <h3>QR code:</h3>
-        {{ code }}
-        <v-btn @click="openLink()">Open Link</v-btn>
+        {{ code }} <br>
+        <v-btn size="large" @click="openLink()">Open Link</v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
 
