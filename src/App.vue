@@ -53,7 +53,7 @@ export default {
       //this.TWA.showAlert('Theme has changed');
     },
     openLink() {
-      TWA.openLink(this.code);
+      this.TWA.openLink(this.code);
     },
     processQRCode(data) {
        this.code = data.data;
