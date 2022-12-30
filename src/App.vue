@@ -1,7 +1,6 @@
 <template>
   <div id="main">
-    <div v-if="is_telegram_api_update">
-      <h3>QR code</h3>
+    <div v-if="is_telegram_api_update" class="text-center">
 
       <!--<h3>Window Control</h3>
       <b>isExpanded</b>: {{ TWA.isExpanded }}
@@ -16,19 +15,19 @@
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
 
-      <h3>Scan QR code</h3><br>
-      <v-btn
-        @click="showQRScanner()"
-        color="success"
-        icon="mdi-qrcode-scan"
-        size="x-large"
-      ></v-btn>
     </div>
 
-    <div v-if="!is_telegram_api_update">
+
+    <div v-if="!is_telegram_api_update" class="text-center">
       Please update Telegram to Use the app!
        Telegram API version needed 6.4 or greater
       Your Telegram API version: {{ TWA.version }}
+      <!--<h3>Scan QR code</h3><br>
+      <v-btn
+        @click="showQRScanner()"
+        icon="mdi-qrcode-scan"
+        size="x-large"
+      ></v-btn>-->
     </div>
   </div>
 </template>
@@ -45,7 +44,10 @@ export default {
   created() {
     // Binding function to all the event types
     //this.TWA.onEvent('themeChanged', this.themeChanged);
+    this.TWA.MainButton.setText("Scan QR code");
+    this.TWA.MainButton.show();
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
+    this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
     this.is_telegram_api_update = this.TWA.isVersionAtLeast('6.4');
   },
   mounted() {
@@ -57,6 +59,9 @@ export default {
     // attached with onEvent function during created
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
+    },
+    mainButtonClicked() {
+      this.showQRScanner();
     },
     openLink() {
       this.TWA.openLink(this.code);
