@@ -8,17 +8,21 @@
       <button @click="TWA.expand()">Expand</button>
       <button @click="TWA.close()">Close</button><br>
 
-
       <h3>Functions and buttons</h3>
-
       -->
-      <div v-if="code">{{ code }}
-      <button @click="openLink()">{{ code }}</button>
-      <button @click="copyCodeClipboard()">copy to clipboard</button>
 
+      <div v-if="code">{{ code }}
+        <button @click="openLink()">{{ code }}</button>
+        <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
 
-      <button @click="showQRScanner()">Scan QR code</button><br>
+      <h3>Scan QR code</h3><br>
+      <v-btn
+        @click="showQRScanner()"
+        color="success"
+        icon="mdi-qrcode-scan"
+        size="x-large"
+      ></v-btn>
     </div>
 
     <div v-if="!is_telegram_api_update">
@@ -74,15 +78,13 @@ export default {
       // light medium heavy rigid soft
       this.TWA.HapticFeedback.impactOccurred("heavy");
     },
-    copyCodeClipboard() {
-      const storage = document.createElement('textarea');
-      storage.value = this.code;
-      this.$refs.reference.appendChild(storage);
-      storage.select();
-      storage.setSelectionRange(0, 99999);
-      document.execCommand('copy');
-      this.$refs.reference.removeChild(storage);
-    }
+    //copyCodeClipboard() {
+    //  var Url = this.$refs.mylink;
+    //  Url.innerHTML = window.location.href;
+    //  console.log(Url.innerHTML)
+    //  Url.select();
+    //  document.execCommand("copy");
+    //}
   }
 }
 </script>
