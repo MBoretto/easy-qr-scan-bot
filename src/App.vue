@@ -1,8 +1,7 @@
 <template>
   <div id="main">
     <div v-if="is_telegram_api_update">
-      <h3>QR scanner</h3>
-      <button @click="showQRScanner()">Scan QR code</button><br>
+      <h3>QR code</h3>
 
       <!--<h3>Window Control</h3>
       <b>isExpanded</b>: {{ TWA.isExpanded }}
@@ -15,8 +14,11 @@
       -->
       <div v-if="code">{{ code }}
       <button @click="openLink()">{{ code }}</button>
-      <!--<button @click="openLink()">copy to clipboard</button>-->
+      <button @click="copyCodeClipboard()">copy to clipboard</button>
+
       </div>
+
+      <button @click="showQRScanner()">Scan QR code</button><br>
     </div>
 
     <div v-if="!is_telegram_api_update">
@@ -72,6 +74,15 @@ export default {
       // light medium heavy rigid soft
       this.TWA.HapticFeedback.impactOccurred("heavy");
     },
+    copyCodeClipboard() {
+      const storage = document.createElement('textarea');
+      storage.value = this.code;
+      this.$refs.reference.appendChild(storage);
+      storage.select();
+      storage.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      this.$refs.reference.removeChild(storage);
+    }
   }
 }
 </script>
