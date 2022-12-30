@@ -67,7 +67,7 @@
     <button @click="toggleProgressMainButton()">Show/Hide Main Button progress</button><br>
 
     <h3>QR scanner</h3>
-    <button @click="showQRScanner()">Show Alert</button><br>
+    <button @click="showQRScanner()">Scan QR code</button><br>
     <h3>Popups</h3>
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
     <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
@@ -145,8 +145,8 @@ export default {
     popupClosed() {
       this.TWA.showAlert('Popup was closed');
     },
-    processQRCode(data) {
-       this.TWA.showAlert(data.text)
+    processQRCode(text) {
+       this.TWA.showAlert(text)
        this.TWA.closeScanQrPopup();
     },
     // End of callbacks
