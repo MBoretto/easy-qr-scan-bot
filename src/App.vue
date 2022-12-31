@@ -14,7 +14,7 @@
         <v-btn size="large" @click="openLink()">Open Link</v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
-      <div v-if="code">
+      <div v-if="!code">
         <h3>Scan a QR code!</h3>
       </div>
     </div>
