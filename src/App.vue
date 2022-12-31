@@ -79,7 +79,7 @@ export default {
     // End of callbacks
     showQRScanner() {
       const par = {
-          text: "Press to scan"
+          text: ""
         };
       this.TWA.showScanQrPopup(par);
     },
