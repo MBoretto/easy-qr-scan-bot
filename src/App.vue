@@ -1,12 +1,10 @@
 <template>
   <div id="main">
     <div v-if="is_telegram_api_update" class="text-center">
-
       <!--<h3>Window Control</h3>
       <b>isExpanded</b>: {{ TWA.isExpanded }}
       <button @click="TWA.expand()">Expand</button>
       <button @click="TWA.close()">Close</button><br>
-
       <h3>Functions and buttons</h3>
       -->
 
@@ -16,13 +14,14 @@
         <v-btn size="large" @click="openLink()">Open Link</v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
-
+      <div v-if="code">
+        <h3>Scan a QR code!</h3>
+      </div>
     </div>
 
-
     <div v-if="!is_telegram_api_update" class="text-center">
-      Please update Telegram to Use the app!
-       Telegram API version needed 6.4 or greater
+      Please update Telegram to Use the app!<br>
+      Telegram API version needed 6.4 or greater.<br>
       Your Telegram API version: {{ TWA.version }}
       <!--<h3>Scan QR code</h3><br>
       <v-btn

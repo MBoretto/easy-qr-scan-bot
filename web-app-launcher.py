@@ -18,8 +18,9 @@ import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppInfo
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
-TOKEN = 'yourbottoken'
-URL = 'https://mboretto.github.io/telegram-bot-vue-wep-app/'
+from config import TOKEN
+
+URL = 'https://easyqrscanbot.netlify.app/'
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -30,10 +31,10 @@ logger = logging.getLogger(__name__)
 def start(update: Update, context: CallbackContext) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
-        [InlineKeyboardButton("Launch Web App", web_app=WebAppInfo(url=URL))],
+        [InlineKeyboardButton("Scan QR codes", web_app=WebAppInfo(url=URL))],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Press to launch the Web App', reply_markup=reply_markup)
+    update.message.reply_text('Press to launch QR scanner', reply_markup=reply_markup)
 
 
 def button(update: Update, context: CallbackContext) -> None:
@@ -49,7 +50,7 @@ def button(update: Update, context: CallbackContext) -> None:
 
 def help_command(update: Update, context: CallbackContext) -> None:
     """Displays info on how to use the bot."""
-    update.message.reply_text("Use /start to test this bot.")
+    update.message.reply_text("Type /start and open the QR dialog.")
 
 
 def main() -> None:
