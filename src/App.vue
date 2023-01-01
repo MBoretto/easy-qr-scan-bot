@@ -1,6 +1,9 @@
 <template>
   <div id="main">
-    <div v-if="is_telegram_api_update" class="text-center">
+    <div
+      v-if="is_telegram_api_update"
+      class="text-center"
+    >
       <!--<h3>Window Control</h3>
       <b>isExpanded</b>: {{ TWA.isExpanded }}
       <button @click="TWA.expand()">Expand</button>
@@ -11,7 +14,14 @@
       <div v-if="code">
         <h3>QR code:</h3>
         {{ code }} <br>
-        <v-btn size="large" @click="openLink()">Open Link</v-btn>
+
+        <v-btn
+          v-if="is_url"
+          size="large"
+          @click="openLink()"
+        >
+          Open Link
+        </v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
       <div v-if="!code">
@@ -19,7 +29,10 @@
       </div>
     </div>
 
-    <div v-if="!is_telegram_api_update" class="text-center">
+    <div
+      v-if="!is_telegram_api_update"
+      class="text-center"
+    >
       Please update Telegram to Use the app!<br>
       Telegram API version needed 6.4 or greater.<br>
       Your Telegram API version: {{ TWA.version }}
@@ -35,11 +48,15 @@
 
 
 <script>
+import { prepareUrl } from './helpers'
+
 export default {
   data() {
     return {
-      code: null,
       is_telegram_api_update: false,
+      code: null,
+      is_url: false,
+      url: null,
     };
   },
   created() {
@@ -68,12 +85,16 @@ export default {
       this.showQRScanner();
     },
     openLink() {
-      this.TWA.openLink(this.code);
+      this.TWA.openLink(this.url);
     },
     processQRCode(data) {
        this.code = data.data;
+       const result = prepareUrl(this.code)
+       this.is_url = result.is_url;
+       this.url = result.value;
        this.hapticImpact();
        this.TWA.closeScanQrPopup();
+
        //this.TWA.showAlert(data.data);
     },
     // End of callbacks
