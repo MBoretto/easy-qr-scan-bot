@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <div
-      v-if="is_telegram_api_update"
+      v-if="is_telegram_client && is_telegram_api_updated"
       class="text-center"
     >
       <!--<h3>Window Control</h3>
@@ -29,19 +29,21 @@
       </div>
     </div>
 
+
+
     <div
-      v-if="!is_telegram_api_update"
+      v-if="!is_telegram_client"
+      class="text-center"
+    >
+      Please open the app from a Telegram client!<br>
+    </div>
+    <div
+      v-if="is_telegram_client && !is_telegram_api_updated"
       class="text-center"
     >
       Please update Telegram to Use the app!<br>
-      Telegram API version needed 6.4 or greater.<br>
+      Telegram API version needed 6.5 or greater.<br>
       Your Telegram API version: {{ TWA.version }}
-      <!--<h3>Scan QR code</h3><br>
-      <v-btn
-        @click="showQRScanner()"
-        icon="mdi-qrcode-scan"
-        size="x-large"
-      ></v-btn>-->
     </div>
   </div>
 </template>
@@ -53,7 +55,8 @@ import { prepareUrl } from './helpers'
 export default {
   data() {
     return {
-      is_telegram_api_update: false,
+      is_telegram_client: false,
+      is_telegram_api_updated: false,
       code: null,
       is_url: false,
       url: null,
@@ -65,9 +68,17 @@ export default {
     this.TWA.MainButton.setText("Scan QR code");
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
     this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
-    this.is_telegram_api_update = this.TWA.isVersionAtLeast('6.4');
 
-    if (this.is_telegram_api_update) {
+    this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.5');
+    // platform not updated if version is not 6.5 or greater
+    if (!this.is_telegram_api_updated) {
+      return;
+    }
+    if (this.TWA.platform != "unknown") {
+      this.is_telegram_client = true;
+    }
+
+    if (this.is_telegram_client && this.is_telegram_api_updated) {
       this.TWA.MainButton.show();
     }
   },
