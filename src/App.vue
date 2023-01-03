@@ -42,7 +42,7 @@
       class="text-center"
     >
       Please update Telegram to Use the app!<br>
-      Telegram API version needed 6.5 or greater.<br>
+      Telegram API version needed 6.4 or greater.<br>
       Your Telegram API version: {{ TWA.version }}
     </div>
   </div>
@@ -69,8 +69,8 @@ export default {
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
     this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
 
-    this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.5');
-    // platform not updated if version is not 6.5 or greater
+    this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.4');
+    // platform not updated if version is not 6.4 or greater
     if (!this.is_telegram_api_updated) {
       return;
     }
