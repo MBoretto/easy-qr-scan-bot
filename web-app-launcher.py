@@ -20,7 +20,8 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 
 from config import TOKEN
 
-URL = 'https://easyqrscanbot.netlify.app/'
+URL = 'https://mboretto.github.io/easy-qr-scan-bot/'
+URL_TEST = 'https://easyqrscanbot.netlify.app/'
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -36,6 +37,13 @@ def start(update: Update, context: CallbackContext) -> None:
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Press to launch QR scanner', reply_markup=reply_markup)
 
+def develop(update: Update, context: CallbackContext) -> None:
+    """Sends a message with three inline buttons attached."""
+    keyboard = [
+        [InlineKeyboardButton("Scan QR codes with develop branch", web_app=WebAppInfo(url=URL_TEST))],
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Press to launch QR scanner', reply_markup=reply_markup
 
 def button(update: Update, context: CallbackContext) -> None:
     """Parses the CallbackQuery and updates the message text."""
@@ -59,6 +67,7 @@ def main() -> None:
     updater = Updater(TOKEN)
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
+    updater.dispatcher.add_handler(CommandHandler('dev', develop))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help_command))
 

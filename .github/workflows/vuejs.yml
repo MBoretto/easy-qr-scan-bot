@@ -1,4 +1,4 @@
-# Sample workflow for building and deploying a vuejs site to GitHub Pages
+# Sample workflow for testing, building and deploying a vuejs site to GitHub Pages
 
 name: Deploy Vuejs site to Pages
 
@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   # Build job
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,23 +44,34 @@ jobs:
         with:
           node-version: "16"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
-#       - name: Setup Pages
-#         uses: actions/configure-pages@v2
-#         with:
-#           # Automatically inject router.base in your Nuxt configuration file and set
-#           # target to static (https://nuxtjs.org/docs/configuration-glossary/configuration-target/).
-#           #
-#           # You may remove this line if you want to manage the configuration yourself.
-#           static_site_generator: nuxt
-#       - name: Restore cache
-#         uses: actions/cache@v3
-#         with:
-#           path: |
-#             dist
-#             .nuxt
-#           key: ${{ runner.os }}-nuxt-build-${{ hashFiles('dist') }}
-#           restore-keys: |
-#             ${{ runner.os }}-nuxt-build-
+      - name: Install dependencies
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Run lint
+        run: ${{ steps.detect-package-manager.outputs.manager }} run lint
+      - name: Run tests
+        run: ${{ steps.detect-package-manager.outputs.manager }} run test
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Detect package manager
+        id: detect-package-manager
+        run: |
+          if [ -f "${{ github.workspace }}/package.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=install" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "Unable to determine packager manager"
+            exit 1
+          fi
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Static HTML export with Vuejs
