@@ -71,21 +71,18 @@ export default {
 
     this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.4');
     // platform not updated if version is not 6.4 or greater
-    if (!this.is_telegram_api_updated) {
-      return;
-    }
+
     if (this.TWA.platform != "unknown") {
       this.is_telegram_client = true;
     }
 
     if (this.is_telegram_client && this.is_telegram_api_updated) {
       this.TWA.MainButton.show();
+      this.showQRScanner();
     }
   },
   mounted() {
-    // What is the best? mounted or created??
     this.TWA.ready();
-    this.showQRScanner()
   },
   methods: {
     // attached with onEvent function during created
