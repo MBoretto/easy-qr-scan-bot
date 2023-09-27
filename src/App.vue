@@ -29,18 +29,23 @@
       </div>
     </div>
     <input type="text" v-model="cloud_storage_key_values">
-    <!--<div>
+    <div>
       <ul>
         <li v-for="item in cloud_storage_key_values" :key="item.id">
           {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
         </li>
       </ul>
     </div>-->
-    
-   <!--v-for on cloud_storage_key_values-->
 
 
-
+  <div>
+    <h1>QR codes</h1>
+    <ul>
+      <li v-for="(value, key) in cloud_storage_key_values" :key="key">
+        <p>{{ key }}: {{ value }}</p>
+      </li>
+    </ul>
+  </div>
 
     <div
       v-if="!is_telegram_client"
@@ -74,7 +79,7 @@ export default {
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: [],
-      cloud_storage_key_values: []
+      cloud_storage_key_values: {}
     };
   },
   created() {
@@ -95,11 +100,7 @@ export default {
       this.showQRScanner();
     }
 
-    //<button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
-    //<button @click="TWA.CloudStorage.getItems(cloud_storage_keys, this.processItems)">Get Values</button><br>
-
     this.loadStorage();
-
   },
   mounted() {
     this.TWA.ready();
@@ -120,12 +121,15 @@ export default {
       if (error) {
         this.TWA.showAlert(error);
         return;
-      }this.cloud_storage_values = data;
+      }
+      this.cloud_storage_values = data;
+
       for (let index = 0; index < this.cloud_storage_keys.length; index++) {
         const key = this.cloud_storage_keys[index];
         const value = this.cloud_storage_values[index];
-        const dictionary = { [key]: value };
-        this.cloud_storage_key_values.push(dictionary);
+        // const dictionary = { [key]: value };
+        // this.cloud_storage_key_values.push(dictionary);
+        this.cloud_storage_key_values[key] = value;
       }
     },
     themeChanged() {
