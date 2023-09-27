@@ -37,6 +37,19 @@
           </li>
         </ul>
       </div>-->
+
+      <ul>
+        <li v-for="(number, index) in cloud_storage_keys" :key="index">
+          {{ number }}
+        </li>
+      </ul>
+      <ul>
+        <li v-for="(number, index) in cloud_storage_values" :key="index">
+          {{ number }}
+        </li>
+      </ul>
+
+
       <div>
         <h1>QR codes</h1>
         <ul>
@@ -47,7 +60,6 @@
       </div>
     </div>
    
-
     <div
       v-if="!is_telegram_client"
       class="text-center"
@@ -116,7 +128,7 @@ export default {
         return;
       }
       this.cloud_storage_keys = data;
-      this.TWA.CloudStorage.getItems(this.cloud_storage_keys, this.processItems);
+      this.TWA.CloudStorage.getItems(data, this.processItems);
     },
     processItems(error, data) {
       if (error) {
