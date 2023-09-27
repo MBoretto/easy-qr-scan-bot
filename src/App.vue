@@ -29,7 +29,7 @@
         <h3>Scan a QR code!</h3>
       </div>
 
-      <input type="text" v-model="cloud_storage_key_values">
+      {{ cloud_storage_key_values }}
       <!--<div>
         <ul>
           <li v-for="item in cloud_storage_key_values" :key="item.id">
@@ -41,7 +41,7 @@
         <h1>QR codes</h1>
         <ul>
           <li v-for="(value, key) in cloud_storage_key_values" :key="key">
-            <p>{{ key }}: {{ value }}</p>
+            <p>- {{ key }}: {{ value }}</p>
           </li>
         </ul>
       </div>
@@ -164,7 +164,7 @@ export default {
        this.url = result.value;
        this.hapticImpact();
        this.TWA.closeScanQrPopup();
-       this.addToStorage(this.code);
+       this.addToStorage(data.data);
 
        //this.TWA.showAlert(data.data);
     },
