@@ -24,18 +24,19 @@
         </v-btn>
         <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
+
       <div v-if="!code">
         <h3>Scan a QR code!</h3>
       </div>
 
       <input type="text" v-model="cloud_storage_key_values">
-      <div>
+      <!--<div>
         <ul>
           <li v-for="item in cloud_storage_key_values" :key="item.id">
             {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
           </li>
         </ul>
-      </div>
+      </div>-->
       <div>
         <h1>QR codes</h1>
         <ul>
@@ -127,6 +128,7 @@ export default {
       for (let index = 0; index < this.cloud_storage_keys.length; index++) {
         const key = this.cloud_storage_keys[index];
         const value = this.cloud_storage_values[index];
+        this.TWA.showAlert('key: ' + key + ' value: ' + value);
         // const dictionary = { [key]: value };
         // this.cloud_storage_key_values.push(dictionary);
         this.cloud_storage_key_values[key] = value;
