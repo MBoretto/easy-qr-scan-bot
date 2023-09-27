@@ -28,6 +28,17 @@
         <h3>Scan a QR code!</h3>
       </div>
     </div>
+    <input type="text" v-model="cloud_storage_key_values">
+    <!--<div>
+      <ul>
+        <li v-for="item in cloud_storage_key_values" :key="item.id">
+          {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
+        </li>
+      </ul>
+    </div>-->
+    
+   <!--v-for on cloud_storage_key_values-->
+
 
 
 
@@ -42,7 +53,7 @@
       class="text-center"
     >
       Please update Telegram to Use the app!<br>
-      Telegram API version needed 6.4 or greater.<br>
+      Telegram API version needed 6.9 or greater.<br>
       Your Telegram API version: {{ TWA.version }}
     </div>
   </div>
@@ -60,6 +71,10 @@ export default {
       code: null,
       is_url: false,
       url: null,
+      // Cloud storage
+      cloud_storage_keys: [],
+      cloud_storage_values: [],
+      cloud_storage_key_values: []
     };
   },
   created() {
@@ -68,9 +83,8 @@ export default {
     this.TWA.MainButton.setText("Scan QR code");
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
     this.TWA.onEvent('mainButtonClicked', this.mainButtonClicked);
-
-    this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.4');
-    // platform not updated if version is not 6.4 or greater
+    // platform not updated if version is not 6.9 or greater
+    this.is_telegram_api_updated = this.TWA.isVersionAtLeast('6.9');
 
     if (this.TWA.platform != "unknown") {
       this.is_telegram_client = true;
@@ -80,20 +94,62 @@ export default {
       this.TWA.MainButton.show();
       this.showQRScanner();
     }
+
+    //<button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
+    //<button @click="TWA.CloudStorage.getItems(cloud_storage_keys, this.processItems)">Get Values</button><br>
+
+    this.loadStorage();
+
   },
   mounted() {
     this.TWA.ready();
   },
   methods: {
-    // attached with onEvent function during created
+    loadStorage() {
+      this.TWA.CloudStorage.getKeys(this.processKeys);
+    },
+    processKeys(error, data) {
+      if (error) {
+        this.TWA.showAlert(error);
+        return;
+      }
+      this.cloud_storage_keys = data;
+      this.TWA.CloudStorage.getItems(this.cloud_storage_keys, this.processItems);
+    },
+    processItems(error, data) {
+      if (error) {
+        this.TWA.showAlert(error);
+        return;
+      }this.cloud_storage_values = data;
+      for (let index = 0; index < this.cloud_storage_keys.length; index++) {
+        const key = this.cloud_storage_keys[index];
+        const value = this.cloud_storage_values[index];
+        const dictionary = { [key]: value };
+        this.cloud_storage_key_values.push(dictionary);
+      }
+    },
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
+      return;
     },
     mainButtonClicked() {
       this.showQRScanner();
     },
     openLink() {
       this.TWA.openLink(this.url);
+    },
+    addToStorage(value) {
+
+      // generate a key based on the timestamp
+      const timestamp = new Date().getTime();
+
+      // check if the value is longer than 4096 characters
+      if (value.length > 4096) {
+        this.TWA.showAlert('Error Value is longer than 4096 characters');
+        return;
+      }
+      this.TWA.CloudStorage.setItem(timestamp, value);
+      //this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
     },
     processQRCode(data) {
        this.code = data.data;
@@ -102,6 +158,7 @@ export default {
        this.url = result.value;
        this.hapticImpact();
        this.TWA.closeScanQrPopup();
+       this.addToStorage(this.code);
 
        //this.TWA.showAlert(data.data);
     },
