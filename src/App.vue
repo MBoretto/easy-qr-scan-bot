@@ -27,25 +27,25 @@
       <div v-if="!code">
         <h3>Scan a QR code!</h3>
       </div>
+
+      <input type="text" v-model="cloud_storage_key_values">
+      <div>
+        <ul>
+          <li v-for="item in cloud_storage_key_values" :key="item.id">
+            {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h1>QR codes</h1>
+        <ul>
+          <li v-for="(value, key) in cloud_storage_key_values" :key="key">
+            <p>{{ key }}: {{ value }}</p>
+          </li>
+        </ul>
+      </div>
     </div>
-    <input type="text" v-model="cloud_storage_key_values">
-    <div>
-      <ul>
-        <li v-for="item in cloud_storage_key_values" :key="item.id">
-          {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
-        </li>
-      </ul>
-    </div>-->
-
-
-  <div>
-    <h1>QR codes</h1>
-    <ul>
-      <li v-for="(value, key) in cloud_storage_key_values" :key="key">
-        <p>{{ key }}: {{ value }}</p>
-      </li>
-    </ul>
-  </div>
+   
 
     <div
       v-if="!is_telegram_client"
