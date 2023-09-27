@@ -116,6 +116,16 @@ export default {
     this.loadStorage();
   },
   mounted() {
+
+    // alert wiht storage keys to json
+    this.TWA.showAlert('json: ' + JSON.stringify(this.cloud_storage_keys));
+    for (let index = 0; index < this.cloud_storage_keys.length; index++) {
+      this.TWA.showAlert('key: ' + this.cloud_storage_keys[index] + ' value: ' + this.cloud_storage_values[index]);
+      // const dictionary = { [key]: value };
+      // this.cloud_storage_key_values.push(dictionary);
+      this.cloud_storage_key_values[this.cloud_storage_keys[index]] = this.cloud_storage_values[index];
+    }
+
     this.TWA.ready();
   },
   methods: {
@@ -137,14 +147,7 @@ export default {
       }
       this.cloud_storage_values = data;
 
-      // alert wiht storage keys to json
-      this.TWA.showAlert('json: ' + JSON.stringify(this.cloud_storage_keys));
-      for (let index = 0; index < this.cloud_storage_keys.length; index++) {
-        this.TWA.showAlert('key: ' + this.cloud_storage_keys[index] + ' value: ' + this.cloud_storage_values[index]);
-        // const dictionary = { [key]: value };
-        // this.cloud_storage_key_values.push(dictionary);
-        this.cloud_storage_key_values[this.cloud_storage_keys[index]] = this.cloud_storage_values[index];
-      }
+
     },
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
