@@ -35,7 +35,7 @@
           v-for="(avalue, akey) in cloud_storage_values"
           :key="akey"
         >
-          {{ akey }} - {{ avalue }}
+          {{ akey }} - {{ formattedDate(akey) }} - {{ avalue }}
           <button @click="removeKey(akey)">
             Delete
           </button>
@@ -120,6 +120,8 @@ export default {
         this.TWA.showAlert(error);
         return;
       }
+      //sort timestamps in descending order
+      data.sort((a, b) => b - a);
       this.cloud_storage_keys = data;
       this.TWA.CloudStorage.getItems(data, this.processItems);
     },
@@ -135,7 +137,6 @@ export default {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
           delete this.cloud_storage_values[key];
-          
           break;
         }
       }
@@ -152,7 +153,6 @@ export default {
       this.TWA.openLink(this.url);
     },
     addToStorage(value) {
-
       // generate a key based on the timestamp
       const timestamp = new Date().getTime();
 
@@ -162,7 +162,24 @@ export default {
         return;
       }
       this.TWA.CloudStorage.setItem(timestamp, value);
+      this.cloud_storage_keys.unshift(timestamp);
+      this.cloud_storage_values[timestamp] = value;
       //this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
+    },
+    formattedDate(timestamp) {
+      // Create a Date object from the timestamp
+      const date = new Date(timestamp);
+
+      // Extract day, month, year, hour, and minute components
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based, so add 1
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+
+      // Format the date as "dd/mm/yyyy hh:mm"
+      const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+      return formattedDate;
     },
     processQRCode(data) {
        this.code = data.data;
