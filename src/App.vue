@@ -39,7 +39,7 @@
       <h1>Previous Scans</h1>
       <ul>
         <li v-for="(avalue, index) in cloud_storage_values" :key="index">
-          {{ index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <button @click="removeKey(cloud_storage_keys[index])">Delete</button>
+          {{ index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <!--<button @click="removeKey(cloud_storage_keys[index])">Delete</button>-->
         </li>
       </ul>
     </div>
