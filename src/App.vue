@@ -162,13 +162,14 @@ export default {
         return;
       }
       this.TWA.CloudStorage.setItem(timestamp, value);
-      this.cloud_storage_keys.unshift(timestamp);
+      // convert timestamp in string and add it to the array
+      this.cloud_storage_keys.unshift(timestamp.toString());
       this.cloud_storage_values[timestamp] = value;
       //this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
     },
     formattedDate(timestamp) {
       // Create a Date object from the timestamp
-      const date = new Date(timestamp);
+      const date = new Date(parseInt(timestamp));
 
       // Extract day, month, year, hour, and minute components
       const day = date.getDate();
