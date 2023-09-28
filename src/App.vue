@@ -39,7 +39,7 @@
       <h1>Previous Scans</h1>
       <ul>
         <li v-for="(avalue, index) in cloud_storage_values" :key="index">
-          {{ cloud_storage_values.length - index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <button @click="removeKey(cloud_storage_keys[index])">Delete</button>
+          {{ index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <button @click="removeKey(cloud_storage_keys[index])">Delete</button>
         </li>
       </ul>
     </div>
@@ -93,7 +93,7 @@ export default {
 
     if (this.is_telegram_client && this.is_telegram_api_updated) {
       this.TWA.MainButton.show();
-      this.showQRScanner();
+      //this.showQRScanner();
     }
 
     this.loadStorage();
