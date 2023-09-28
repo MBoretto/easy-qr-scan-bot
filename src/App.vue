@@ -126,7 +126,7 @@ export default {
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
-          delete myDictionary.key2;
+          delete cloud_storage_values[key];
           break;
         }
       }
