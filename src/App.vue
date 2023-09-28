@@ -29,7 +29,6 @@
         <h3>Scan a QR code!</h3>
       </div>
 
-      {{ cloud_storage_key_values }}
       <!--<div>
         <ul>
           <li v-for="item in cloud_storage_key_values" :key="item.id">
@@ -40,14 +39,9 @@
       <h1>Previous Scans</h1>
       <ul>
         <li v-for="(avalue, index) in cloud_storage_values" :key="index">
-          Index: {{ index }} - {{ cloud_storage_keys[index] }} - {{ avalue }}
+          {{ cloud_storage_values.length - index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <button @click="removeKey(cloud_storage_keys[index])">Delete</button>
         </li>
       </ul>
-      <!--<ul>
-        <li v-for="(avalue, index) in cloud_storage_values" :key="index">
-          {{ avalue }}
-        </li>
-      </ul>-->
     </div>
    
     <div
@@ -82,7 +76,6 @@ export default {
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: [],
-      cloud_storage_key_values: {}
     };
   },
   created() {
@@ -106,16 +99,6 @@ export default {
     this.loadStorage();
   },
   mounted() {
-
-    // alert wiht storage keys to json
-    /*this.TWA.showAlert('json: ' + JSON.stringify(this.cloud_storage_keys));
-    for (let index = 0; index < this.cloud_storage_keys.length; index++) {
-      this.TWA.showAlert('key: ' + this.cloud_storage_keys[index] + ' value: ' + this.cloud_storage_values[index]);
-      // const dictionary = { [key]: value };
-      // this.cloud_storage_key_values.push(dictionary);
-      this.cloud_storage_key_values[this.cloud_storage_keys[index]] = this.cloud_storage_values[index];
-    }*/
-
     this.TWA.ready();
   },
   methods: {
@@ -136,8 +119,16 @@ export default {
         return;
       }
       this.cloud_storage_values = data;
-
-
+    },
+    removeKey(key) {
+      this.TWA.CloudStorage.removeItem(key);
+      for (var index = 0; index < this.cloud_storage_keys.length; index++) {
+        if (this.cloud_storage_keys[index] === key) {
+          this.cloud_storage_keys.splice(index, 1);
+          this.cloud_storage_values.splice(index, 1);
+          break;
+        }
+      }
     },
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
