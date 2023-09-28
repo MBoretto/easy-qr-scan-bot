@@ -39,8 +39,8 @@
       </div>-->
       <h1>Previous Scans</h1>
       <ul>
-        <li v-for="(akey, index) in cloud_storage_keys" :key="index">
-          Index: {{ index }} - {{ akey }} - {{ cloud_storage_values[index] }}
+        <li v-for="(avalue, index) in cloud_storage_keys" :key="index">
+          Index: {{ index }} - {{ cloud_storage_keys[index] }} - {{ avalue }}
         </li>
       </ul>
       <!--<ul>
@@ -108,13 +108,13 @@ export default {
   mounted() {
 
     // alert wiht storage keys to json
-    this.TWA.showAlert('json: ' + JSON.stringify(this.cloud_storage_keys));
+    /*this.TWA.showAlert('json: ' + JSON.stringify(this.cloud_storage_keys));
     for (let index = 0; index < this.cloud_storage_keys.length; index++) {
       this.TWA.showAlert('key: ' + this.cloud_storage_keys[index] + ' value: ' + this.cloud_storage_values[index]);
       // const dictionary = { [key]: value };
       // this.cloud_storage_key_values.push(dictionary);
       this.cloud_storage_key_values[this.cloud_storage_keys[index]] = this.cloud_storage_values[index];
-    }
+    }*/
 
     this.TWA.ready();
   },
