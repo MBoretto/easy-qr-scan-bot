@@ -39,7 +39,7 @@
       </div>-->
       <h1>Previous Scans</h1>
       <ul>
-        <li v-for="(avalue, index) in cloud_storage_keys" :key="index">
+        <li v-for="(avalue, index) in cloud_storage_values" :key="index">
           Index: {{ index }} - {{ cloud_storage_keys[index] }} - {{ avalue }}
         </li>
       </ul>
