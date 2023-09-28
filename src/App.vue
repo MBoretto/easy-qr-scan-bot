@@ -37,27 +37,17 @@
           </li>
         </ul>
       </div>-->
-
+      <h1>Previous Scans</h1>
       <ul>
-        <li v-for="(number, index) in cloud_storage_keys" :key="index">
-          {{ number }}
+        <li v-for="(akey, index) in cloud_storage_keys" :key="index">
+          Index: {{ index }} - {{ akey }} - {{ cloud_storage_values[index] }}
         </li>
       </ul>
-      <ul>
-        <li v-for="(number, index) in cloud_storage_values" :key="index">
-          {{ number }}
+      <!--<ul>
+        <li v-for="(avalue, index) in cloud_storage_values" :key="index">
+          {{ avalue }}
         </li>
-      </ul>
-
-
-      <div>
-        <h1>QR codes</h1>
-        <ul>
-          <li v-for="(value, key) in cloud_storage_key_values" :key="key">
-            <p>- {{ key }}: {{ value }}</p>
-          </li>
-        </ul>
-      </div>
+      </ul>-->
     </div>
    
     <div
