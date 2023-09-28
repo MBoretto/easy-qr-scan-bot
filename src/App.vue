@@ -43,8 +43,8 @@
       </ul>
     </div>
     <h1>Debug</h1>
-    <pre>{{ arrayAsJSON(cloud_storage_values) }}</pre>
-    <pre>{{ arrayAsJSON(cloud_storage_keys) }}</pre>
+    <pre>{{ valuesAsJSON }}</pre>
+    <pre>{{ keysAsJSON }}</pre>
     <div
       v-if="!is_telegram_client"
       class="text-center"
@@ -61,7 +61,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import { prepareUrl } from './helpers'
@@ -80,9 +79,13 @@ export default {
     };
   },
   computed: {
-    arrayAsJSON(data) {
+    valuesAsJSON() {
       // Convert the array to a JSON string
-      return JSON.stringify(data, null, 2);
+      return JSON.stringify(this.cloud_storage_values, null, 2);
+    },
+    keysAsJSON() {
+      // Convert the array to a JSON string
+      return JSON.stringify(this.cloud_storage_keys, null, 2);
     }
   },
   created() {
@@ -128,14 +131,15 @@ export default {
       this.cloud_storage_values = data;
     },
     removeKey(key) {
-      this.TWA.CloudStorage.removeItem(key);
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
           delete this.cloud_storage_values[key];
+          
           break;
         }
       }
+      this.TWA.CloudStorage.removeItem(key);
     },
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
