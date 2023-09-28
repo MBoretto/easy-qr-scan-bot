@@ -31,8 +31,14 @@
 
       <h1>Previous Scans</h1>
       <ul>
-        <li v-for="(avalue, key) in cloud_storage_values" :key="key">
-          {{ key }} - {{ avalue }} <button @click="removeKey(key)">Delete</button>
+        <li 
+          v-for="(avalue, akey) in cloud_storage_values"
+          :key="akey"
+        >
+          {{ akey }} - {{ avalue }}
+          <button @click="removeKey(akey)">
+            Delete
+          </button>
         </li>
       </ul>
     </div>
@@ -126,7 +132,7 @@ export default {
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
-          delete cloud_storage_values[key];
+          delete this.cloud_storage_values[key];
           break;
         }
       }
