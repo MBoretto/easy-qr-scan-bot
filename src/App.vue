@@ -43,7 +43,7 @@
         </li>
       </ul>
     </div>
-   
+    <pre>{{ arrayAsJSON }}</pre>
     <div
       v-if="!is_telegram_client"
       class="text-center"
@@ -77,6 +77,12 @@ export default {
       cloud_storage_keys: [],
       cloud_storage_values: [],
     };
+  },
+  computed: {
+    arrayAsJSON() {
+      // Convert the array to a JSON string
+      return JSON.stringify(this.cloud_storage_values, null, 2);
+    }
   },
   created() {
     // Binding function to all the event types
