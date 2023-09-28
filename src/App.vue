@@ -29,21 +29,16 @@
         <h3>Scan a QR code!</h3>
       </div>
 
-      <!--<div>
-        <ul>
-          <li v-for="item in cloud_storage_key_values" :key="item.id">
-            {{ item.key }}  {{ item.key }} <button @click="removeKey(item.key)">Delete</button><br>
-          </li>
-        </ul>
-      </div>-->
       <h1>Previous Scans</h1>
       <ul>
-        <li v-for="(avalue, index) in cloud_storage_values" :key="index">
-          {{ index }}) {{ cloud_storage_keys[index] }} - {{ avalue }} <!--<button @click="removeKey(cloud_storage_keys[index])">Delete</button>-->
+        <li v-for="(avalue, key) in cloud_storage_values" :key="key">
+          {{ key }} - {{ avalue }} <button @click="removeKey(key)">Delete</button>
         </li>
       </ul>
     </div>
-    <pre>{{ arrayAsJSON }}</pre>
+    <h1>Debug</h1>
+    <pre>{{ arrayAsJSON(cloud_storage_values) }}</pre>
+    <pre>{{ arrayAsJSON(cloud_storage_keys) }}</pre>
     <div
       v-if="!is_telegram_client"
       class="text-center"
@@ -75,13 +70,13 @@ export default {
       url: null,
       // Cloud storage
       cloud_storage_keys: [],
-      cloud_storage_values: [],
+      cloud_storage_values: {},
     };
   },
   computed: {
-    arrayAsJSON() {
+    arrayAsJSON(data) {
       // Convert the array to a JSON string
-      return JSON.stringify(this.cloud_storage_values, null, 2);
+      return JSON.stringify(data, null, 2);
     }
   },
   created() {
@@ -131,7 +126,7 @@ export default {
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
-          this.cloud_storage_values.splice(index, 1);
+          delete myDictionary.key2;
           break;
         }
       }
