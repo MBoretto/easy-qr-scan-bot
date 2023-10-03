@@ -24,6 +24,7 @@
         max-width="600"
       >
         <v-toolbar color="secondary">
+          <v-spacer />
           <v-btn
             variant="text" 
             icon="mdi-qrcode-scan"
@@ -38,6 +39,7 @@
             variant="text" 
             icon="mdi-cog"
           />
+          <v-spacer />
         </v-toolbar>
         <v-list lines="one">
           <v-list-subheader inset>
