@@ -31,19 +31,23 @@
             <v-icon>
               mdi-qrcode-scan
             </v-icon>
-            Scan QR Code
+            Scan
           </v-btn>
 
           <v-spacer />
-          <v-btn 
-            variant="text" 
-            icon="mdi-history"
-          />
+          <v-btn>
+            <v-icon>
+              mdi-history
+            </v-icon>
+            History
+          </v-btn>
           <v-spacer />
-          <v-btn 
-            variant="text" 
-            icon="mdi-cog"
-          />
+          <v-btn>
+            <v-icon>
+              mdi-cog 
+            </v-icon>
+            Settings
+          </v-btn>
           <v-spacer />
         </v-toolbar>
         <v-list lines="one">
