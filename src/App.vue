@@ -25,26 +25,23 @@
       >
         <v-toolbar color="secondary">
           <v-spacer />
-          <v-btn
-            variant="text" 
-            icon="mdi-qrcode-scan"
-          >
+          <v-btn>
+            <v-icon>
+              mdi-qrcode-scan
+            </v-icon>
             Scan QR Code
           </v-btn>
+
           <v-spacer />
           <v-btn 
             variant="text" 
             icon="mdi-history"
-          >
-            History
-          </v-btn>
+          />
           <v-spacer />
           <v-btn 
             variant="text" 
             icon="mdi-cog"
-          >
-            Settings
-          </v-btn>
+          />
           <v-spacer />
         </v-toolbar>
         <v-list lines="one">
