@@ -26,19 +26,17 @@
         <v-toolbar color="secondary">
           <v-btn
             variant="text" 
-            icon="mdi-menu"
-          />
-
-          <v-toolbar-title>My scans</v-toolbar-title>
-          <v-spacer />
-          <v-btn 
-            variant="text" 
-            icon="mdi-magnify"
+            icon="mdi-qrcode-scan"
           />
 
           <v-btn 
             variant="text" 
-            icon="mdi-view-module"
+            icon="mdi-history"
+          />
+
+          <v-btn 
+            variant="text" 
+            icon="mdi-cog"
           />
         </v-toolbar>
         <v-list lines="one">
