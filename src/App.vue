@@ -33,6 +33,31 @@
           </v-btn>
         </li>
       </ul>
+
+      <v-list lines="one">
+        <v-list-item
+          v-for="(akey, index) in cloud_storage_keys"
+          :key="index"
+          :title="cloud_storage_values[akey]"
+          subtitle="formattedDate(akey"
+        >
+          <template #prepend>
+            <v-avatar color="grey-lighten-1">
+              <v-icon color="white">
+                mdi-folder
+              </v-icon>
+            </v-avatar>
+          </template>
+
+          <template #append>
+            <v-btn
+              color="grey-lighten-1"
+              icon="mdi-information"
+              variant="text"
+            />
+          </template>
+        </v-list-item>
+      </v-list>
     </div>
     <v-switch
       v-model="is_continuous_scan"
