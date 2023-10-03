@@ -15,7 +15,6 @@
         >
           Open Link
         </v-btn>
-        <!--<button @click="copyCodeClipboard()">copy to clipboard</button>-->
       </div>
 
       <div v-if="!code">
@@ -29,9 +28,9 @@
           :key="index"
         >
           {{ cloud_storage_values[akey] }} - {{ formattedDate(akey) }} 
-          <button @click="removeKey(akey)">
+          <v-btn @click="removeKey(akey)">
             Delete
-          </button>
+          </v-btn>
         </li>
       </ul>
     </div>
@@ -42,13 +41,24 @@
       hide-details
       @click="is_continuous_scan = !is_continuous_scan"
     />
+    <v-switch
+      v-model="show_debug"
+      color="success"
+      label="Continuous Scan"
+      hide-details
+      @click="show_debug = !show_debug"
+    />
 
-    <button @click="loadStorage()">
+    <v-btn @click="loadStorage()">
       Sync
-    </button>
-    <h1>Debug</h1>
-    <pre>{{ valuesAsJSON }}</pre>
-    <pre>{{ keysAsJSON }}</pre>
+    </v-btn>
+    <div
+      v-if="show_debug"
+    >
+      <h1>Debug</h1>
+      <pre>{{ valuesAsJSON }}</pre>
+      <pre>{{ keysAsJSON }}</pre>
+    </div>
     <div
       v-if="!is_telegram_client"
       class="text-center"
@@ -81,6 +91,7 @@ export default {
       cloud_storage_keys: [],
       cloud_storage_values: {},
       is_continuous_scan: false,
+      show_debug: false,
     };
   },
   computed: {
@@ -207,7 +218,9 @@ export default {
     },
     hapticImpact() {
       // light medium heavy rigid soft
+      this.TWA.HapticFeedback.impactOccurred("rigid");
       this.TWA.HapticFeedback.impactOccurred("heavy");
+      this.TWA.HapticFeedback.impactOccurred("rigid");
     },
     //copyCodeClipboard() {
     //  var Url = this.$refs.mylink;
