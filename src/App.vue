@@ -15,41 +15,61 @@
         >
           Open Link
         </v-btn>
+        <div v-if="!code">
+          <h3>Scan a QR code!</h3>
+        </div>
       </div>
+      <v-card
+        class="mx-auto"
+        max-width="600"
+      >
+        <v-toolbar color="secondary">
+          <v-btn
+            variant="text" 
+            icon="mdi-menu"
+          />
 
-      <div v-if="!code">
-        <h3>Scan a QR code!</h3>
-      </div>
+          <v-toolbar-title>My scans</v-toolbar-title>
+          <v-spacer />
+          <v-btn 
+            variant="text" 
+            icon="mdi-magnify"
+          />
 
-      <h1>Previous Scans</h1>
-      <v-list lines="one">
-        <v-list-subheader inset>
-          History
-        </v-list-subheader>
-        <v-list-item
-          v-for="(akey, index) in cloud_storage_keys"
-          :key="index"
-          :title="cloud_storage_values[akey]"
-          :subtitle="formattedDate(akey)"
-        >
-          <template #prepend>
-            <v-avatar color="grey-lighten-1">
-              <v-icon color="white">
-                mdi-map-marker-outline
-              </v-icon>
-            </v-avatar>
-          </template>
+          <v-btn 
+            variant="text" 
+            icon="mdi-view-module"
+          />
+        </v-toolbar>
+        <v-list lines="one">
+          <v-list-subheader inset>
+            History
+          </v-list-subheader>
+          <v-list-item
+            v-for="(akey, index) in cloud_storage_keys"
+            :key="index"
+            :title="cloud_storage_values[akey]"
+            :subtitle="formattedDate(akey)"
+          >
+            <template #prepend>
+              <v-avatar color="grey-lighten-1">
+                <v-icon color="white">
+                  mdi-map-marker-outline
+                </v-icon>
+              </v-avatar>
+            </template>
 
-          <template #append>
-            <v-btn
-              color="grey-lighten-1"
-              icon="mdi-delete-outline"
-              variant="text"
-              @click="removeKey(akey)"
-            />
-          </template>
-        </v-list-item>
-      </v-list>
+            <template #append>
+              <v-btn
+                color="grey-lighten-1"
+                icon="mdi-delete-outline"
+                variant="text"
+                @click="removeKey(akey)"
+              />
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card>
     </div>
     <v-switch
       v-model="is_continuous_scan"
