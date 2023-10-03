@@ -192,9 +192,10 @@ export default {
       const year = date.getFullYear();
       const hour = date.getHours();
       const minute = date.getMinutes();
+      const second = date.getSeconds();
+      // Format the date as "dd/mm/yyyy hh:mm:ss"
+      const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
 
-      // Format the date as "dd/mm/yyyy hh:mm"
-      const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
       return formattedDate;
     },
     processQRCode(data) {
@@ -211,13 +212,29 @@ export default {
     },
     // End of callbacks
     showQRScanner() {
-      const par = {
+      let par = {
           text: ""
         };
+      if (!this.is_continuous_scan) {
+        par = {
+          text: "Continuous scan enabled.",
+        };
+      }
+
       this.TWA.showScanQrPopup(par);
     },
     hapticImpact() {
       // light medium heavy rigid soft
+      this.TWA.HapticFeedback.impactOccurred("rigid");
+      this.TWA.HapticFeedback.impactOccurred("heavy");
+      this.TWA.HapticFeedback.impactOccurred("rigid");
+      this.TWA.HapticFeedback.impactOccurred("heavy");
+      this.TWA.HapticFeedback.impactOccurred("rigid");
+      this.TWA.HapticFeedback.impactOccurred("heavy");
+      this.TWA.HapticFeedback.impactOccurred("rigid");
+      this.TWA.HapticFeedback.impactOccurred("heavy");
+      this.TWA.HapticFeedback.impactOccurred("rigid");
+      this.TWA.HapticFeedback.impactOccurred("heavy");
       this.TWA.HapticFeedback.impactOccurred("rigid");
       this.TWA.HapticFeedback.impactOccurred("heavy");
       this.TWA.HapticFeedback.impactOccurred("rigid");
