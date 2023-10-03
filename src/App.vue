@@ -25,7 +25,9 @@
       >
         <v-toolbar color="secondary">
           <v-spacer />
-          <v-btn>
+          <v-btn
+            class="icon-button"
+          >
             <v-icon>
               mdi-qrcode-scan
             </v-icon>
@@ -319,4 +321,11 @@ button {
   display: inline-block;
   font-size: 15px;
 }
+
+.icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 </style>
