@@ -22,18 +22,6 @@
       </div>
 
       <h1>Previous Scans</h1>
-      <ul>
-        <li
-          v-for="(akey, index) in cloud_storage_keys"
-          :key="index"
-        >
-          {{ cloud_storage_values[akey] }} - {{ formattedDate(akey) }} 
-          <v-btn @click="removeKey(akey)">
-            Delete
-          </v-btn>
-        </li>
-      </ul>
-
       <v-list lines="one">
         <v-list-subheader inset>
           History
@@ -42,7 +30,7 @@
           v-for="(akey, index) in cloud_storage_keys"
           :key="index"
           :title="cloud_storage_values[akey]"
-          subtitle="`${formattedDate(akey)}`"
+          :subtitle="formattedDate(akey)"
         >
           <template #prepend>
             <v-avatar color="grey-lighten-1">
