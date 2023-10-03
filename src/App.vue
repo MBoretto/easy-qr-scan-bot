@@ -24,17 +24,6 @@
 
       <h1>Previous Scans</h1>
       <ul>
-        <li 
-          v-for="(avalue, akey) in cloud_storage_values"
-          :key="akey"
-        >
-          {{ akey }} - {{ formattedDate(akey) }} - {{ avalue }}
-          <button @click="removeKey(akey)">
-            Delete
-          </button>
-        </li>
-      </ul>
-      <ul>
         <li
           v-for="(akey, index) in cloud_storage_keys"
           :key="index"
@@ -46,6 +35,14 @@
         </li>
       </ul>
     </div>
+    <v-switch
+      v-model="is_continuous_scan"
+      color="success"
+      label="Continuous Scan"
+      hide-details
+      @click="is_continuous_scan = !is_continuous_scan"
+    />
+
     <button @click="loadStorage()">
       Sync
     </button>
@@ -83,7 +80,7 @@ export default {
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: {},
-      continuous_scan: false,
+      is_continuous_scan: false,
     };
   },
   computed: {
@@ -113,7 +110,6 @@ export default {
       this.TWA.MainButton.show();
       //this.showQRScanner();
     }
-
     this.loadStorage();
   },
   mounted() {
@@ -196,9 +192,10 @@ export default {
        this.is_url = result.is_url;
        this.url = result.value;
        this.hapticImpact();
-       this.TWA.closeScanQrPopup();
        this.addToStorage(data.data);
-
+       if (!this.is_continuous_scan) {
+         this.TWA.closeScanQrPopup();
+       }
        //this.TWA.showAlert(data.data);
     },
     // End of callbacks
