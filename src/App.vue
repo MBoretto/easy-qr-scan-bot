@@ -42,7 +42,7 @@
           v-for="(akey, index) in cloud_storage_keys"
           :key="index"
           :title="cloud_storage_values[akey]"
-          subtitle="formattedDate(akey)"
+          subtitle="`${formattedDate(akey)}`"
         >
           <template #prepend>
             <v-avatar color="grey-lighten-1">
@@ -57,7 +57,7 @@
               color="grey-lighten-1"
               icon="mdi-delete-outline"
               variant="text"
-              @click="`${removeKey(akey)}`"
+              @click="removeKey(akey)"
             />
           </template>
         </v-list-item>
