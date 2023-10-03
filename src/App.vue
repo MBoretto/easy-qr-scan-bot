@@ -35,16 +35,19 @@
       </ul>
 
       <v-list lines="one">
+        <v-list-subheader inset>
+          History
+        </v-list-subheader>
         <v-list-item
           v-for="(akey, index) in cloud_storage_keys"
           :key="index"
           :title="cloud_storage_values[akey]"
-          subtitle="formattedDate(akey"
+          subtitle="formattedDate(akey)"
         >
           <template #prepend>
             <v-avatar color="grey-lighten-1">
               <v-icon color="white">
-                mdi-folder
+                mdi-map-marker-outline
               </v-icon>
             </v-avatar>
           </template>
@@ -52,8 +55,9 @@
           <template #append>
             <v-btn
               color="grey-lighten-1"
-              icon="mdi-information"
+              icon="mdi-delete-outline"
               variant="text"
+              @click="removeKey(akey)"
             />
           </template>
         </v-list-item>
