@@ -4,13 +4,6 @@
       v-if="is_telegram_client && is_telegram_api_updated"
       class="text-center"
     >
-      <!--<h3>Window Control</h3>
-      <b>isExpanded</b>: {{ TWA.isExpanded }}
-      <button @click="TWA.expand()">Expand</button>
-      <button @click="TWA.close()">Close</button><br>
-      <h3>Functions and buttons</h3>
-      -->
-
       <div v-if="code">
         <h3>QR code:</h3>
         {{ code }} <br>
@@ -41,7 +34,21 @@
           </button>
         </li>
       </ul>
+      <ul>
+        <li
+          v-for="(akey, index) in cloud_storage_keys"
+          :key="index"
+        >
+          {{ cloud_storage_values[akey] }} - {{ formattedDate(akey) }} 
+          <button @click="removeKey(akey)">
+            Delete
+          </button>
+        </li>
+      </ul>
     </div>
+    <button @click="loadStorage()">
+      Sync
+    </button>
     <h1>Debug</h1>
     <pre>{{ valuesAsJSON }}</pre>
     <pre>{{ keysAsJSON }}</pre>
@@ -76,6 +83,7 @@ export default {
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: {},
+      continuous_scan: false,
     };
   },
   computed: {
