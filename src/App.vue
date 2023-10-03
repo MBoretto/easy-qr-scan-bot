@@ -37,14 +37,14 @@
     <v-switch
       v-model="is_continuous_scan"
       color="success"
-      label="Continuous Scan"
+      :label="`Continuous Scan: ${is_continuous_scan.toString()}`"
       hide-details
       @click="is_continuous_scan = !is_continuous_scan"
     />
     <v-switch
       v-model="show_debug"
       color="success"
-      label="Continuous Scan"
+      :label="`Show debug: ${show_debug.toString()}`"
       hide-details
       @click="show_debug = !show_debug"
     />
