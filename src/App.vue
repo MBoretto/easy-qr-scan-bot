@@ -57,7 +57,7 @@
               color="grey-lighten-1"
               icon="mdi-delete-outline"
               variant="text"
-              @click="removeKey(akey)"
+              @click="`${removeKey(akey)}`"
             />
           </template>
         </v-list-item>
