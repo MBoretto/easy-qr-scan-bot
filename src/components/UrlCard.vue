@@ -22,7 +22,7 @@
         color="red"
         icon="mdi-delete-outline"
         variant="text"
-        @click="removeKey(akey)"
+        @click="$emit('remove-key')"
       />
     </v-card-actions>
   </v-card>
@@ -38,6 +38,9 @@ export default defineComponent({
       required: true, // This is optional, but it makes the prop required
     },
   },
+  emits: [
+    'remove-key'
+  ],
   data() {
     return {
       aurl: this.url,

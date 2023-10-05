@@ -82,10 +82,12 @@
                 <GeoCard
                   v-if="enriched_values[akey]['type'] === 'geo'"
                   :coordinate="enriched_values[akey]['info']"
+                  @remove-key="removeKey(key)"  
                 />
                 <UrlCard
                   v-if="enriched_values[akey]['type'] === 'url'"
                   :url="enriched_values[akey]['info']"
+                  @remove-key="removeKey(key)" 
                 />
               </v-expansion-panel-text>
             </v-expansion-panel>
