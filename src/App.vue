@@ -1,5 +1,6 @@
 <template>
   <div id="main">
+    <!---->
     <div
       v-if="is_telegram_client && is_telegram_api_updated"
     >
@@ -42,26 +43,26 @@
         <v-card 
           v-if="show_history"
         >
-          <v-list
-            lines="one" 
-          >
-            <!--last scan-->
-            <div v-if="last_code">
-              <h3>QR code:</h3>
-              {{ last_code }} <br>
+          <!--last scan-->
+          <div v-if="last_code">
+            <h3>QR code:</h3>
+            {{ last_code }} <br>
 
-              <v-btn
-                v-if="is_url"
-                size="large"
-                @click="openLink()"
-              >
-                Open Link
-              </v-btn>
-              <div v-if="!last_code">
-                <h3>Scan a QR code!</h3>
-              </div>
+            <v-btn
+              v-if="is_url"
+              size="large"
+              @click="openLink()"
+            >
+              Open Link
+            </v-btn>
+            <div v-if="!last_code">
+              <h3>Scan a QR code!</h3>
             </div>
-            <!--previous scans-->
+          </div>
+          <!--previous scans-->
+          <!--<v-list
+            lines="one" 
+          >   
             <v-list-subheader inset>
               History
             </v-list-subheader>
@@ -88,7 +89,54 @@
                 />
               </template>
             </v-list-item>
-          </v-list>
+          </v-list>-->
+
+          <v-expansion-panels>
+            <v-expansion-panel
+              v-for="(akey, index) in cloud_storage_keys"
+              :key="index"
+            >
+              <v-expansion-panel-title>
+                <v-row no-gutters>
+                  <v-col
+                    cols="2" 
+                    class="d-flex justify-start"
+                  >
+                    <v-avatar color="grey-lighten-1">
+                      <v-icon color="white">
+                        mdi-map-marker-outline
+                      </v-icon>
+                    </v-avatar>
+                  </v-col>
+                  <v-col
+                    cols="10"
+                  >
+                    <div>
+                      <div 
+                        class="headline"
+                      >
+                        {{ cloud_storage_values[akey] }}
+                      </div>
+                      <div
+                        class="text-subtitle-2, text-grey"
+                      >
+                        {{ formattedDate(akey) }}
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-title>
+              <v-expansion-panel-text>
+                {{ cloud_storage_values[akey] }}
+                <v-btn
+                  color="grey-lighten-1"
+                  icon="mdi-delete-outline"
+                  variant="text"
+                  @click="removeKey(akey)"
+                />
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-card>
         <!--settings-->
         <v-card 
@@ -98,7 +146,7 @@
             lines="one" 
           >
             <v-list-subheader inset>
-              Settings
+              User Controls
             </v-list-subheader>
             <v-list-item
               title="Continuous scan"
@@ -113,6 +161,9 @@
                 />
               </template>
             </v-list-item>
+            <v-list-subheader inset>
+              Debug
+            </v-list-subheader>
             <v-list-item
               title="Sync Cloud Storage"
               subtitle="Sync the local cache with Telegram Cloud Storage"
@@ -177,8 +228,8 @@ export default {
       url: null,
       show_history: true,
       // Cloud storage
-      cloud_storage_keys: [],
-      cloud_storage_values: {},
+      cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
+      cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
       is_continuous_scan: false,
       show_debug: false,
     };
