@@ -37,3 +37,20 @@ export function prepareCoordinate(data) {
   const parts = code.split(',');
   return {lat: parts[0], lng: parts[1]};
 }
+
+export function formattedDate(timestamp) {
+  // Create a Date object from the timestamp
+  const date = new Date(parseInt(timestamp));
+
+  // Extract day, month, year, hour, and minute components
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-based, so add 1
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
+  // Format the date as "dd/mm/yyyy hh:mm:ss"
+  const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+
+  return formattedDate;
+}

@@ -1,7 +1,8 @@
 <template>
   <div id="main">
-    <!-- v-if="is_telegram_client && is_telegram_api_updated"-->
-    <div>
+    <div
+      v-if="is_telegram_client && is_telegram_api_updated"
+    >
       <v-card
         class="mx-auto"
         max-width="600"
@@ -186,7 +187,8 @@
 </template>
 
 <script>
-import { prepareUrl, prepareCoordinate } from './helpers'
+// eslint-disable-next-line no-unused-vars
+import { formattedDate, prepareUrl, prepareCoordinate } from './helpers'
 import UrlCard from "./components/UrlCard.vue";
 import GeoCard from "./components/GeoCard.vue";
 import TextCard from "./components/TextCard.vue";
@@ -204,10 +206,8 @@ export default {
       last_code: null,
       show_history: true,
       // Cloud storage
-      // cloud_storage_keys: [],
-      // cloud_storage_values: {},
-      cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
-      cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
+      cloud_storage_keys: [],
+      cloud_storage_values: {},
       enriched_values: {},
       is_continuous_scan: false,
       show_debug: false,
@@ -274,6 +274,7 @@ export default {
       this.enrichValues(data);
     },
     removeKey(key) {
+      //TODO clean the enriched_values
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
         if (this.cloud_storage_keys[index] === key) {
           this.cloud_storage_keys.splice(index, 1);
@@ -296,10 +297,9 @@ export default {
         this.enriched_values[key]['info'] = this.cloud_storage_values[key];
       } else if (code_type == "url") {
         this.enriched_values[key]['info'] = prepareUrl(this.cloud_storage_values[key]);
-      } else if (code_type == "text") {
+      } else {
         this.enriched_values[key]['info'] = this.cloud_storage_values[key];
       }
-
     },
     enrichValues(data) {
       for (var key in data) {
@@ -329,32 +329,12 @@ export default {
       //this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
       return timestamp;
     },
-    formattedDate(timestamp) {
-      // Create a Date object from the timestamp
-      const date = new Date(parseInt(timestamp));
-
-      // Extract day, month, year, hour, and minute components
-      const day = date.getDate();
-      const month = date.getMonth() + 1; // Months are zero-based, so add 1
-      const year = date.getFullYear();
-      const hour = date.getHours();
-      const minute = date.getMinutes();
-      const second = date.getSeconds();
-      // Format the date as "dd/mm/yyyy hh:mm:ss"
-      const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
-
-      return formattedDate;
-    },
     processQRCode(data) {
       // avoids to scan the same code twice in continuous scan mode
       if (data.data == this.last_code) {
         return;
       }
       this.last_code = data.data;
-      //const result = prepareUrl(this.last_code)
-      //this.is_url = result.is_url;
-      //this.url = result.value;
-
       this.hapticImpact();
       let key = this.addToStorage(data.data);
       this.enrichValue(key);
@@ -394,17 +374,13 @@ export default {
       let type = this.enriched_values[key]['type'];
       if (type == "geo") {
         return "mdi-map-marker-outline";
-      }
-      if (type == "wifi") {
+      } else if (type == "wifi") {
         return "mdi-wifi";
-      }
-      if (type == "vcard") {
+      } else if (type == "vcard") {
         return "mdi-account";
-      }
-      if (type == "url") {
+      } else if (type == "url") {
         return "mdi-link";
-      }
-      if (type  == "text") {
+      } else {
         return "mdi-text-box";
       }
     },
@@ -418,7 +394,6 @@ export default {
           text: "Continuous scan enabled.",
         };
       }
-
       this.TWA.showScanQrPopup(par);
     },
     hapticImpact() {
