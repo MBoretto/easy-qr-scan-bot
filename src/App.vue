@@ -187,8 +187,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
-import { formattedDate, prepareUrl, prepareCoordinate } from './helpers'
+import { prepareUrl, prepareCoordinate } from './helpers'
 import UrlCard from "./components/UrlCard.vue";
 import GeoCard from "./components/GeoCard.vue";
 import TextCard from "./components/TextCard.vue";
@@ -400,6 +399,22 @@ export default {
       // light medium heavy rigid soft
       this.TWA.HapticFeedback.impactOccurred("rigid");
       this.TWA.HapticFeedback.impactOccurred("heavy");
+    },
+    formattedDate(timestamp) {
+      // Create a Date object from the timestamp
+      const date = new Date(parseInt(timestamp));
+
+      // Extract day, month, year, hour, and minute components
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based, so add 1
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
+      const second = date.getSeconds();
+      // Format the date as "dd/mm/yyyy hh:mm:ss"
+      const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+
+      return formattedDate;
     }
   }
 }
