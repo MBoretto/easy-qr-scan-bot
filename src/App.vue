@@ -39,15 +39,16 @@
           <v-spacer />
         </v-toolbar>
         <!--history-->
-        <v-card>
+        <v-card 
+          v-if="show_history"
+        >
           <v-list
-            v-if="show_history"
             lines="one" 
           >
             <!--last scan-->
-            <div v-if="code">
+            <div v-if="last_code">
               <h3>QR code:</h3>
-              {{ code }} <br>
+              {{ last_code }} <br>
 
               <v-btn
                 v-if="is_url"
@@ -56,7 +57,7 @@
               >
                 Open Link
               </v-btn>
-              <div v-if="!code">
+              <div v-if="!last_code">
                 <h3>Scan a QR code!</h3>
               </div>
             </div>
@@ -90,9 +91,10 @@
           </v-list>
         </v-card>
         <!--settings-->
-        <v-card>
+        <v-card 
+          v-if="!show_history"
+        >
           <v-list
-            v-if="!show_history"
             lines="one" 
           >
             <v-list-subheader inset>
@@ -170,7 +172,7 @@ export default {
     return {
       is_telegram_client: false,
       is_telegram_api_updated: false,
-      code: null,
+      last_code: null,
       is_url: false,
       url: null,
       show_history: true,
@@ -287,23 +289,29 @@ export default {
       return formattedDate;
     },
     processQRCode(data) {
-       this.code = data.data;
-       const result = prepareUrl(this.code)
-       this.is_url = result.is_url;
-       this.url = result.value;
-       this.hapticImpact();
-       this.addToStorage(data.data);
-       if (!this.is_continuous_scan) {
-         this.TWA.closeScanQrPopup();
-       }
-       //this.TWA.showAlert(data.data);
+      // avoids to scan the same code twice in continuous scan mode
+      if (data.data == this.last_code) {
+        return;
+      }
+      this.last_code = data.data;
+      const result = prepareUrl(this.last_code)
+      this.is_url = result.is_url;
+      this.url = result.value;
+      this.hapticImpact();
+      this.addToStorage(data.data);
+      if (!this.is_continuous_scan) {
+        this.TWA.closeScanQrPopup();
+      }
+      // Back to the history screen
+      this.show_history = true;
+      //this.TWA.showAlert(data.data);
     },
     // End of callbacks
     showQRScanner() {
       let par = {
           text: ""
         };
-      if (!this.is_continuous_scan) {
+      if (this.is_continuous_scan) {
         par = {
           text: "Continuous scan enabled.",
         };
