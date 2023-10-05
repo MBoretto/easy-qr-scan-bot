@@ -1,6 +1,5 @@
 <template>
   <div id="main">
-    <!-- -->
     <div
       v-if="is_telegram_client && is_telegram_api_updated"
     >
@@ -43,55 +42,8 @@
         <v-card 
           v-if="show_history"
         >
-          <!--last scan-->
-          <div v-if="last_code">
-            <h3>QR code:</h3>
-            {{ last_code }} <br>
-
-            <v-btn
-              v-if="is_url"
-              size="large"
-              @click="openLink()"
-            >
-              Open Link
-            </v-btn>
-            <div v-if="!last_code">
-              <h3>Scan a QR code!</h3>
-            </div>
-          </div>
           <!--previous scans-->
-          <!--<v-list
-            lines="one" 
-          >   
-            <v-list-subheader inset>
-              History
-            </v-list-subheader>
-            <v-list-item
-              v-for="(akey, index) in cloud_storage_keys"
-              :key="index"
-              :title="cloud_storage_values[akey]"
-              :subtitle="formattedDate(akey)"
-            >
-              <template #prepend>
-                <v-avatar color="grey-lighten-1">
-                  <v-icon color="white">
-                    mdi-map-marker-outline
-                  </v-icon>
-                </v-avatar>
-              </template>
-
-              <template #append>
-                <v-btn
-                  color="grey-lighten-1"
-                  icon="mdi-delete-outline"
-                  variant="text"
-                  @click="removeKey(akey)"
-                />
-              </template>
-            </v-list-item>
-          </v-list>-->
-
-          <v-expansion-panels>
+          <v-expansion-panels v-model="expanded_panels">
             <v-expansion-panel
               v-for="(akey, index) in cloud_storage_keys"
               :key="index"
@@ -113,12 +65,12 @@
                   >
                     <div>
                       <div 
-                        class="headline"
+                        class="headline mb-1"
                       >
                         {{ cloud_storage_values[akey] }}
                       </div>
                       <div
-                        class="text-subtitle-2, text-grey"
+                        class="text-subtitle-2 text-grey"
                       >
                         {{ formattedDate(akey) }}
                       </div>
@@ -126,13 +78,14 @@
                   </v-col>
                 </v-row>
               </v-expansion-panel-title>
-              <v-expansion-panel-text>
-                {{ cloud_storage_values[akey] }}
-                <v-btn
-                  color="grey-lighten-1"
-                  icon="mdi-delete-outline"
-                  variant="text"
-                  @click="removeKey(akey)"
+              <v-expansion-panel-text v-if="enriched_values[akey] && enriched_values[akey].hasOwnProperty('type')">
+                <GeoCard
+                  v-if="enriched_values[akey]['type'] === 'geo'"
+                  :coordinate="enriched_values[akey]['info']"
+                />
+                <UrlCard
+                  v-if="enriched_values[akey]['type'] === 'url'"
+                  :url="enriched_values[akey]['info']"
                 />
               </v-expansion-panel-text>
             </v-expansion-panel>
@@ -227,25 +180,28 @@
 </template>
 
 <script>
-import { prepareUrl } from './helpers'
+import { prepareUrl, prepareCoordinate } from './helpers'
+import UrlCard from "./components/UrlCard.vue";
+import GeoCard from "./components/GeoCard.vue";
 
 export default {
+  components: {
+    UrlCard,
+    GeoCard
+  },
   data() {
     return {
       is_telegram_client: false,
       is_telegram_api_updated: false,
       last_code: null,
-      is_url: false,
-      url: null,
       show_history: true,
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: {},
-      // cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
-      // cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
       enriched_values: {},
       is_continuous_scan: false,
       show_debug: false,
+      expanded_panels: [0], // Set the first element to expanded by default
     };
   },
   computed: {
@@ -280,7 +236,7 @@ export default {
       //this.showQRScanner();
       this.loadStorage();
     }
-  
+    //this.enrichValues(this.cloud_storage_values);
   },
   mounted() {
     this.TWA.ready();
@@ -319,7 +275,19 @@ export default {
     },
     enrichValue(key) {
       this.enriched_values[key] = {};
-      this.enriched_values[key]['type'] = this.detectCodeType(this.cloud_storage_values[key]);
+      const code_type = this.detectCodeType(this.cloud_storage_values[key]);
+      this.enriched_values[key]['type'] = code_type;
+    
+      if (code_type == "geo") {
+        this.enriched_values[key]['info'] = prepareCoordinate(this.cloud_storage_values[key]);
+      } else if (code_type == "wifi") {
+        //this.enriched_values[key]['info'] = processWifiCode(this.cloud_storage_values[key]);
+      } else if (code_type == "vcard") {
+        //this.enriched_values[key]['info'] = processVcardCode(this.cloud_storage_values[key]);
+      } else if (code_type == "url") {
+        this.enriched_values[key]['info'] = prepareUrl(this.cloud_storage_values[key]);
+      }
+
     },
     enrichValues(data) {
       for (var key in data) {
@@ -332,9 +300,6 @@ export default {
     },
     mainButtonClicked() {
       this.showQRScanner();
-    },
-    openLink() {
-      this.TWA.openLink(this.url);
     },
     addToStorage(value) {
       // generate a key based on the timestamp
@@ -374,9 +339,10 @@ export default {
         return;
       }
       this.last_code = data.data;
-      const result = prepareUrl(this.last_code)
-      this.is_url = result.is_url;
-      this.url = result.value;
+      //const result = prepareUrl(this.last_code)
+      //this.is_url = result.is_url;
+      //this.url = result.value;
+
       this.hapticImpact();
       let key = this.addToStorage(data.data);
       this.enrichValue(key);
@@ -385,23 +351,19 @@ export default {
       }
       // Back to the history screen
       this.show_history = true;
+      // last element displayed
+      this.expanded_panels = [0];
       //this.TWA.showAlert(data.data);
     },
     detectCodeType(code) {
       // if start with geo
       if (code.startsWith("geo:")) {
         return "geo";
-      }
-      // if start with WIFI
-      if (code.startsWith("WIFI:")) {
+      } else if (code.startsWith("WIFI:")) {
         return "wifi";
-      }
-      // if start with BEGIN:VCARD
-      if (code.startsWith("BEGIN:VCARD")) {
+      } else if (code.startsWith("BEGIN:VCARD")) {
         return "vcard";
-      }
-      // if start with http
-      if (code.startsWith("http")) {
+      } else if (code.startsWith("http")) {
         return "url";
       }
       return "text";
@@ -451,14 +413,7 @@ export default {
       // light medium heavy rigid soft
       this.TWA.HapticFeedback.impactOccurred("rigid");
       this.TWA.HapticFeedback.impactOccurred("heavy");
-    },
-    //copyCodeClipboard() {
-    //  var Url = this.$refs.mylink;
-    //  Url.innerHTML = window.location.href;
-    //  console.log(Url.innerHTML)
-    //  Url.select();
-    //  document.execCommand("copy");
-    //}
+    }
   }
 }
 </script>

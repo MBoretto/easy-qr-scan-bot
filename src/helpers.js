@@ -29,3 +29,11 @@ export function prepareUrl(code) {
   }
   return {is_url: false, value: code};
 }
+
+export function prepareCoordinate(data) {
+  //remove the geo: string
+  const code = data.replace('geo:', '');
+  //split the string in two parts
+  const parts = code.split(',');
+  return {lat: parts[0], lng: parts[1]};
+}
