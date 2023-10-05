@@ -6,16 +6,19 @@
   > 
     <v-card-item>
       <div>
-        {{ atext }}
+        Network Name: {{ wifi.S }}
+      </div>
+      <div>
+        Type: {{ wifi.T }}
+      </div>
+      <div>
+        Password: {{ wifi.P }}
       </div>
     </v-card-item>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        color="red"
-        icon="mdi-delete-outline"
-        variant="text"
-        @click="$emit('remove-key')"
+      <ButtonDelete
+        @remove-key="$emit('remove-key')"
       />
     </v-card-actions>
   </v-card>
@@ -23,34 +26,36 @@
 
 <script>
 import { defineComponent } from 'vue';
+import ButtonDelete from "./ButtonDelete.vue";
 export default defineComponent({
-  name: "TextCard",
+  name: "CardWifi",
+  components: {
+    ButtonDelete,
+  },
   props: {
-    text: {
-      type:  String, // Object is a constructor for objects
+    wifi: {
+      type: Object, // Object is a constructor for objects
       required: true, // This is optional, but it makes the prop required
-    }
+    },
   },
   emits: [
     'remove-key'
   ],
   data() {
     return {
-      atext: this.text,
+      aurl: this.url,
     };
   },
   created() {
-    console.log(this.coordinate);
+    console.log(this.url);
   },
   methods: {
-    openLink(lat, lng) {
-        this.TWA.openLink('https://maps.google.com/?q=' + lat + ',' + lng);
+    openLink(url) {
+        this.TWA.openLink(url);
     },
   },
 });
 </script>
-
-
 
 <style scoped>
 </style>

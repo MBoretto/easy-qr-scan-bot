@@ -7,43 +7,27 @@
         class="mx-auto"
         max-width="600"
       >
-        <!--toolbar-->
-        <v-toolbar color="primary">
-          <v-spacer />
-          <v-btn
-            @click="showQRScanner()"
-          >
-            <v-icon>
-              mdi-qrcode-scan
-            </v-icon>
-            Scan
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            @click="show_history = true"
-          >
-            <v-icon>
-              mdi-history
-            </v-icon>
-            History
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            @click="show_history = false"
-          >
-            <v-icon>
-              mdi-cog 
-            </v-icon>
-            Settings
-          </v-btn>
-          <v-spacer />
-        </v-toolbar>
+        <AppMenu 
+          @show-qr-scanner="showQRScanner()"  
+          @show-history="show_history = true"
+          @show-settings="show_history = false"          
+        />
         <!--history-->
         <v-card 
           v-if="show_history"
         >
           <!--previous scans-->
-          <v-expansion-panels v-model="expanded_panels">
+          <div 
+            v-if="!cloud_storage_keys.length"
+            class="text-center headline mb-4 mt-4"
+          >
+            Scan a QR code!
+          </div>
+          <v-expansion-panels
+            v-if="cloud_storage_keys.length"
+            v-model="expanded_panels"
+            class="mt-4"
+          >
             <v-expansion-panel
               v-for="(akey, index) in cloud_storage_keys"
               :key="index"
@@ -79,18 +63,23 @@
                 </v-row>
               </v-expansion-panel-title>
               <v-expansion-panel-text v-if="enriched_values[akey] && enriched_values[akey].hasOwnProperty('type')">
-                <GeoCard
+                <CardGeo
                   v-if="enriched_values[akey]['type'] === 'geo'"
                   :coordinate="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)"  
                 />
-                <UrlCard
+                <CardUrl
                   v-if="enriched_values[akey]['type'] === 'url'"
                   :url="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)" 
                 />
-                <TextCard
-                  v-if="enriched_values[akey]['type'] === 'text' || enriched_values[akey]['type'] === 'wifi' || enriched_values[akey]['type'] === 'vcard'"
+                <CardWifi
+                  v-if="enriched_values[akey]['type'] === 'wifi'"
+                  :wifi="enriched_values[akey]['info']"
+                  @remove-key="removeKey(akey)" 
+                />
+                <CardText
+                  v-if="enriched_values[akey]['type'] === 'text' || enriched_values[akey]['type'] === 'vcard'"
                   :text="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)"
                 />
@@ -187,16 +176,20 @@
 </template>
 
 <script>
-import { prepareUrl, prepareCoordinate } from './helpers'
-import UrlCard from "./components/UrlCard.vue";
-import GeoCard from "./components/GeoCard.vue";
-import TextCard from "./components/TextCard.vue";
+import { prepareUrl, prepareCoordinate, prepareWifi } from './helpers';
+import AppMenu from "./components/AppMenu.vue";
+import CardUrl from "./components/CardUrl.vue";
+import CardGeo from "./components/CardGeo.vue";
+import CardWifi from "./components/CardWifi.vue";
+import CardText from "./components/CardText.vue";
 
 export default {
   components: {
-    UrlCard,
-    GeoCard,
-    TextCard,
+    AppMenu,
+    CardUrl,
+    CardGeo,
+    CardWifi,
+    CardText,
   },
   data() {
     return {
@@ -291,7 +284,7 @@ export default {
       if (code_type == "geo") {
         this.enriched_values[key]['info'] = prepareCoordinate(this.cloud_storage_values[key]);
       } else if (code_type == "wifi") {
-        this.enriched_values[key]['info'] = this.cloud_storage_values[key];
+        this.enriched_values[key]['info'] = prepareWifi(this.cloud_storage_values[key]);
       } else if (code_type == "vcard") {
         this.enriched_values[key]['info'] = this.cloud_storage_values[key];
       } else if (code_type == "url") {

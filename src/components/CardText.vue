@@ -6,23 +6,13 @@
   > 
     <v-card-item>
       <div>
-        {{ aurl.value }}
+        {{ atext }}
       </div>
     </v-card-item>
     <v-card-actions>
       <v-spacer />
-      <v-btn 
-        size="large"
-        @click="openLink(aurl.value)"
-      >
-        Open Link
-      </v-btn>
-      <v-spacer />
-      <v-btn
-        color="red"
-        icon="mdi-delete-outline"
-        variant="text"
-        @click="$emit('remove-key')"
+      <ButtonDelete
+        @remove-key="$emit('remove-key')"
       />
     </v-card-actions>
   </v-card>
@@ -30,34 +20,36 @@
 
 <script>
 import { defineComponent } from 'vue';
+import ButtonDelete from "./ButtonDelete.vue";
 export default defineComponent({
-  name: "UrlCard",
+  name: "CardText",
+  components: {
+    ButtonDelete,
+  },
   props: {
-    url: {
-      type: Object, // Object is a constructor for objects
+    text: {
+      type:  String, // Object is a constructor for objects
       required: true, // This is optional, but it makes the prop required
-    },
+    }
   },
   emits: [
     'remove-key'
   ],
   data() {
     return {
-      aurl: this.url,
+      atext: this.text,
     };
   },
   created() {
-    console.log(this.url);
+    console.log(this.coordinate);
   },
   methods: {
-    openLink(url) {
-        this.TWA.openLink(url);
+    openLink(lat, lng) {
+        this.TWA.openLink('https://maps.google.com/?q=' + lat + ',' + lng);
     },
   },
 });
 </script>
-
-
 
 <style scoped>
 </style>

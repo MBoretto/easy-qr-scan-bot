@@ -37,3 +37,20 @@ export function prepareCoordinate(data) {
   const parts = code.split(',');
   return {lat: parts[0], lng: parts[1]};
 }
+
+export function prepareWifi(data) {
+  //remove the geo: string
+  const code = data.replace('WIFI:', '');
+  //split the string in two parts
+  const parts = code.split(';');
+  let wifi_info = {};
+  //loop aver parts
+  for (let i = 0; i < parts.length; i++) {
+    let fragments = parts[i].split(':');
+    if (fragments[0] == '') {
+      continue;
+    }
+    wifi_info[fragments[0]] = fragments[1];
+  }
+  return wifi_info;
+}
