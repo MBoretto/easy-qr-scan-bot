@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <!---->
+    <!-- -->
     <div
       v-if="is_telegram_client && is_telegram_api_updated"
     >
@@ -104,7 +104,7 @@
                   >
                     <v-avatar color="grey-lighten-1">
                       <v-icon color="white">
-                        mdi-map-marker-outline
+                        {{ getIconFromType(akey) }}
                       </v-icon>
                     </v-avatar>
                   </v-col>
@@ -175,6 +175,16 @@
               </template>
             </v-list-item>
             <v-list-item
+              title="Enrich QR codes"
+              subtitle="Decode the content of the QR code according to the type"
+            >
+              <template #append>
+                <v-btn @click="enrichValues(cloud_storage_values)">
+                  Enrich
+                </v-btn>
+              </template>
+            </v-list-item>
+            <v-list-item
               title="Show debug"
               subtitle="Show debug information"
             >
@@ -194,6 +204,7 @@
             <h1>Debug</h1>
             <pre>{{ valuesAsJSON }}</pre>
             <pre>{{ keysAsJSON }}</pre>
+            <pre>{{ enrichAsJSON }}</pre>
           </div>
         </v-card>        
       </v-card>
@@ -228,8 +239,11 @@ export default {
       url: null,
       show_history: true,
       // Cloud storage
-      cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
-      cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
+      cloud_storage_keys: [],
+      cloud_storage_values: {},
+      // cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
+      // cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
+      enriched_values: {},
       is_continuous_scan: false,
       show_debug: false,
     };
@@ -242,6 +256,10 @@ export default {
     keysAsJSON() {
       // Convert the array to a JSON string
       return JSON.stringify(this.cloud_storage_keys, null, 2);
+    },
+    enrichAsJSON() {
+      // Convert the array to a JSON string
+      return JSON.stringify(this.enriched_values, null, 2);
     }
   },
   created() {
@@ -287,6 +305,7 @@ export default {
         return;
       }
       this.cloud_storage_values = data;
+      this.enrichValues(data);
     },
     removeKey(key) {
       for (var index = 0; index < this.cloud_storage_keys.length; index++) {
@@ -297,6 +316,15 @@ export default {
         }
       }
       this.TWA.CloudStorage.removeItem(key);
+    },
+    enrichValue(key) {
+      this.enriched_values[key] = {};
+      this.enriched_values[key]['type'] = this.detectCodeType(this.cloud_storage_values[key]);
+    },
+    enrichValues(data) {
+      for (var key in data) {
+        this.enrichValue(key);
+      }
     },
     themeChanged() {
       //this.TWA.showAlert('Theme has changed');
@@ -322,6 +350,7 @@ export default {
       this.cloud_storage_keys.unshift(timestamp.toString());
       this.cloud_storage_values[timestamp] = value;
       //this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
+      return timestamp;
     },
     formattedDate(timestamp) {
       // Create a Date object from the timestamp
@@ -349,13 +378,61 @@ export default {
       this.is_url = result.is_url;
       this.url = result.value;
       this.hapticImpact();
-      this.addToStorage(data.data);
+      let key = this.addToStorage(data.data);
+      this.enrichValue(key);
       if (!this.is_continuous_scan) {
         this.TWA.closeScanQrPopup();
       }
       // Back to the history screen
       this.show_history = true;
       //this.TWA.showAlert(data.data);
+    },
+    detectCodeType(code) {
+      // if start with geo
+      if (code.startsWith("geo:")) {
+        return "geo";
+      }
+      // if start with WIFI
+      if (code.startsWith("WIFI:")) {
+        return "wifi";
+      }
+      // if start with BEGIN:VCARD
+      if (code.startsWith("BEGIN:VCARD")) {
+        return "vcard";
+      }
+      // if start with http
+      if (code.startsWith("http")) {
+        return "url";
+      }
+      return "text";
+    },
+    getIconFromType(key) {
+      // check if key exists
+      if (!this.enriched_values[key]) {
+        console.log("key not found");
+        return "mdi-text-box";
+      }
+      // check it key type exists
+      if (!this.enriched_values[key]['type']) {
+        console.log("type not found");
+        return "mdi-text-box";
+      }
+      let type = this.enriched_values[key]['type'];
+      if (type == "geo") {
+        return "mdi-map-marker-outline";
+      }
+      if (type == "wifi") {
+        return "mdi-wifi";
+      }
+      if (type == "vcard") {
+        return "mdi-account";
+      }
+      if (type == "url") {
+        return "mdi-link";
+      }
+      if (type  == "text") {
+        return "mdi-text-box";
+      }
     },
     // End of callbacks
     showQRScanner() {
