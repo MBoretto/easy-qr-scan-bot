@@ -54,3 +54,18 @@ export function prepareWifi(data) {
   }
   return wifi_info;
 }
+
+export function prepareVCard(data) {
+  let raw_data = data.replace('BEGIN:VCARD\n', '');
+  raw_data = raw_data.replace('END:VCARD\n', '');
+  const parts = raw_data.split('\n');
+  let vcard_info = {};
+  for (let i = 0; i < parts.length; i++) {
+    let fragments = parts[i].split(':');
+    if (fragments[0] == '') {
+      continue;
+    }
+    vcard_info[fragments[0]] = fragments[1];
+  }
+  return vcard_info;
+}

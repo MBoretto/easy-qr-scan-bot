@@ -6,13 +6,13 @@
   > 
     <v-card-item>
       <div>
-        Network Name: {{ wifi.S }}
+        Network Name: {{ data.S }}
       </div>
       <div>
-        Type: {{ wifi.T }}
+        Type: {{ data.T }}
       </div>
       <div>
-        Password: {{ wifi.P }}
+        Password: {{ data.P }}
       </div>
     </v-card-item>
     <v-card-actions>
@@ -33,7 +33,7 @@ export default defineComponent({
     ButtonDelete,
   },
   props: {
-    wifi: {
+    data: {
       type: Object, // Object is a constructor for objects
       required: true, // This is optional, but it makes the prop required
     },
@@ -41,19 +41,9 @@ export default defineComponent({
   emits: [
     'remove-key'
   ],
-  data() {
-    return {
-      aurl: this.url,
-    };
-  },
   created() {
-    console.log(this.url);
-  },
-  methods: {
-    openLink(url) {
-        this.TWA.openLink(url);
-    },
-  },
+    console.log(this.data);
+  }
 });
 </script>
 

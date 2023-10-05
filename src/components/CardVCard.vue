@@ -5,18 +5,14 @@
     variant="flat"
   > 
     <v-card-item>
-      <div>
-        {{ data.lat }}, {{ data.lng }}
-      </div>
+      <div 
+        v-for="(value, key) in data"
+        :key="key"
+      >
+        {{ key }}: {{ value }}
+      </div>    
     </v-card-item>
     <v-card-actions>
-      <v-spacer />
-      <v-btn 
-        size="large"
-        @click="openLink(data.lat, data.lng)"
-      >
-        Open Location
-      </v-btn>
       <v-spacer />
       <ButtonDelete
         @remove-key="$emit('remove-key')"
@@ -29,7 +25,7 @@
 import { defineComponent } from 'vue';
 import ButtonDelete from "./ButtonDelete.vue";
 export default defineComponent({
-  name: "CardGeo",
+  name: "CardVCard",
   components: {
     ButtonDelete,
   },
@@ -37,19 +33,14 @@ export default defineComponent({
     data: {
       type: Object, // Object is a constructor for objects
       required: true, // This is optional, but it makes the prop required
-    }
+    },
   },
   emits: [
     'remove-key'
   ],
   created() {
     console.log(this.data);
-  },
-  methods: {
-    openLink(lat, lng) {
-        this.TWA.openLink('https://maps.google.com/?q=' + lat + ',' + lng);
-    },
-  },
+  }
 });
 </script>
 

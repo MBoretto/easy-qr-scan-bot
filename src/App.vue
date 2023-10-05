@@ -1,8 +1,7 @@
 <template>
   <div id="main">
-    <div
-      v-if="is_telegram_client && is_telegram_api_updated"
-    >
+    <!--v-if="is_telegram_client && is_telegram_api_updated"-->
+    <div>
       <v-card
         class="mx-auto"
         max-width="600"
@@ -16,7 +15,6 @@
         <v-card 
           v-if="show_history"
         >
-          <!--previous scans-->
           <div 
             v-if="!cloud_storage_keys.length"
             class="text-center headline mb-4 mt-4"
@@ -62,24 +60,31 @@
                   </v-col>
                 </v-row>
               </v-expansion-panel-title>
-              <v-expansion-panel-text v-if="enriched_values[akey] && enriched_values[akey].hasOwnProperty('type')">
+              <v-expansion-panel-text 
+                v-if="enriched_values[akey] && enriched_values[akey].hasOwnProperty('type')"
+              >
                 <CardGeo
                   v-if="enriched_values[akey]['type'] === 'geo'"
-                  :coordinate="enriched_values[akey]['info']"
+                  :data="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)"  
                 />
                 <CardUrl
                   v-if="enriched_values[akey]['type'] === 'url'"
-                  :url="enriched_values[akey]['info']"
+                  :data="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)" 
                 />
                 <CardWifi
                   v-if="enriched_values[akey]['type'] === 'wifi'"
-                  :wifi="enriched_values[akey]['info']"
+                  :data="enriched_values[akey]['info']"
+                  @remove-key="removeKey(akey)" 
+                />
+                <CardVCard
+                  v-if="enriched_values[akey]['type'] === 'vcard'"
+                  :data="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)" 
                 />
                 <CardText
-                  v-if="enriched_values[akey]['type'] === 'text' || enriched_values[akey]['type'] === 'vcard'"
+                  v-if="enriched_values[akey]['type'] === 'text'"
                   :text="enriched_values[akey]['info']"
                   @remove-key="removeKey(akey)"
                 />
@@ -108,6 +113,19 @@
                   hide-details
                   @click="is_continuous_scan = !is_continuous_scan"
                 />
+              </template>
+            </v-list-item>
+            <v-list-subheader inset>
+              About
+            </v-list-subheader>
+            <v-list-item
+              title="Show Your Love on GitHub"
+              subtitle="Contribute and Support @easyqrscanbot"
+            >
+              <template #append>
+                <v-btn @click="openLink('https://github.com/MBoretto/easy-qr-scan-bot')">
+                  <v-icon>mdi-github</v-icon>
+                </v-btn>
               </template>
             </v-list-item>
             <v-list-subheader inset>
@@ -176,11 +194,12 @@
 </template>
 
 <script>
-import { prepareUrl, prepareCoordinate, prepareWifi } from './helpers';
+import { prepareUrl, prepareCoordinate, prepareWifi, prepareVCard } from './helpers';
 import AppMenu from "./components/AppMenu.vue";
 import CardUrl from "./components/CardUrl.vue";
 import CardGeo from "./components/CardGeo.vue";
 import CardWifi from "./components/CardWifi.vue";
+import CardVCard from "./components/CardVCard.vue"
 import CardText from "./components/CardText.vue";
 
 export default {
@@ -189,6 +208,7 @@ export default {
     CardUrl,
     CardGeo,
     CardWifi,
+    CardVCard,
     CardText,
   },
   data() {
@@ -198,8 +218,10 @@ export default {
       last_code: null,
       show_history: true,
       // Cloud storage
-      cloud_storage_keys: [],
-      cloud_storage_values: {},
+      //cloud_storage_keys: [],
+      //cloud_storage_values: {},
+      cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
+      cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
       enriched_values: {},
       is_continuous_scan: false,
       show_debug: false,
@@ -286,7 +308,7 @@ export default {
       } else if (code_type == "wifi") {
         this.enriched_values[key]['info'] = prepareWifi(this.cloud_storage_values[key]);
       } else if (code_type == "vcard") {
-        this.enriched_values[key]['info'] = this.cloud_storage_values[key];
+        this.enriched_values[key]['info'] = prepareVCard(this.cloud_storage_values[key]);
       } else if (code_type == "url") {
         this.enriched_values[key]['info'] = prepareUrl(this.cloud_storage_values[key]);
       } else {
@@ -408,7 +430,10 @@ export default {
       const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
 
       return formattedDate;
-    }
+    },
+    openLink(url) {
+        this.TWA.openLink(url);
+    },
   }
 }
 </script>

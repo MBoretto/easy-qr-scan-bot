@@ -6,14 +6,14 @@
   > 
     <v-card-item>
       <div>
-        {{ aurl.value }}
+        {{ data.value }}
       </div>
     </v-card-item>
     <v-card-actions>
       <v-spacer />
       <v-btn 
         size="large"
-        @click="openLink(aurl.value)"
+        @click="openLink(data.value)"
       >
         Open Link
       </v-btn>
@@ -34,7 +34,7 @@ export default defineComponent({
     ButtonDelete,
   },
   props: {
-    url: {
+    data: {
       type: Object, // Object is a constructor for objects
       required: true, // This is optional, but it makes the prop required
     },
@@ -42,13 +42,8 @@ export default defineComponent({
   emits: [
     'remove-key'
   ],
-  data() {
-    return {
-      aurl: this.url,
-    };
-  },
   created() {
-    console.log(this.url);
+    console.log(this.data);
   },
   methods: {
     openLink(url) {
