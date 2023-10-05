@@ -2,47 +2,35 @@
   <div id="main">
     <div
       v-if="is_telegram_client && is_telegram_api_updated"
-      class="text-center"
     >
-      <div v-if="code">
-        <h3>QR code:</h3>
-        {{ code }} <br>
-
-        <v-btn
-          v-if="is_url"
-          size="large"
-          @click="openLink()"
-        >
-          Open Link
-        </v-btn>
-        <div v-if="!code">
-          <h3>Scan a QR code!</h3>
-        </div>
-      </div>
       <v-card
         class="mx-auto"
         max-width="600"
       >
-        <v-toolbar color="secondary">
+        <!--toolbar-->
+        <v-toolbar color="primary">
           <v-spacer />
           <v-btn
-            class="icon-button"
+            @click="showQRScanner()"
           >
             <v-icon>
               mdi-qrcode-scan
             </v-icon>
             Scan
           </v-btn>
-
           <v-spacer />
-          <v-btn>
+          <v-btn
+            @click="show_history = true"
+          >
             <v-icon>
               mdi-history
             </v-icon>
             History
           </v-btn>
           <v-spacer />
-          <v-btn>
+          <v-btn
+            @click="show_history = false"
+          >
             <v-icon>
               mdi-cog 
             </v-icon>
@@ -50,60 +38,112 @@
           </v-btn>
           <v-spacer />
         </v-toolbar>
-        <v-list lines="one">
-          <v-list-subheader inset>
-            History
-          </v-list-subheader>
-          <v-list-item
-            v-for="(akey, index) in cloud_storage_keys"
-            :key="index"
-            :title="cloud_storage_values[akey]"
-            :subtitle="formattedDate(akey)"
+        <!--history-->
+        <v-card>
+          <v-list
+            v-if="show_history"
+            lines="one" 
           >
-            <template #prepend>
-              <v-avatar color="grey-lighten-1">
-                <v-icon color="white">
-                  mdi-map-marker-outline
-                </v-icon>
-              </v-avatar>
-            </template>
+            <!--last scan-->
+            <div v-if="code">
+              <h3>QR code:</h3>
+              {{ code }} <br>
 
-            <template #append>
               <v-btn
-                color="grey-lighten-1"
-                icon="mdi-delete-outline"
-                variant="text"
-                @click="removeKey(akey)"
-              />
-            </template>
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </div>
-    <v-switch
-      v-model="is_continuous_scan"
-      color="success"
-      :label="`Continuous Scan: ${is_continuous_scan.toString()}`"
-      hide-details
-      @click="is_continuous_scan = !is_continuous_scan"
-    />
-    <v-switch
-      v-model="show_debug"
-      color="success"
-      :label="`Show debug: ${show_debug.toString()}`"
-      hide-details
-      @click="show_debug = !show_debug"
-    />
+                v-if="is_url"
+                size="large"
+                @click="openLink()"
+              >
+                Open Link
+              </v-btn>
+              <div v-if="!code">
+                <h3>Scan a QR code!</h3>
+              </div>
+            </div>
+            <!--previous scans-->
+            <v-list-subheader inset>
+              History
+            </v-list-subheader>
+            <v-list-item
+              v-for="(akey, index) in cloud_storage_keys"
+              :key="index"
+              :title="cloud_storage_values[akey]"
+              :subtitle="formattedDate(akey)"
+            >
+              <template #prepend>
+                <v-avatar color="grey-lighten-1">
+                  <v-icon color="white">
+                    mdi-map-marker-outline
+                  </v-icon>
+                </v-avatar>
+              </template>
 
-    <v-btn @click="loadStorage()">
-      Sync
-    </v-btn>
-    <div
-      v-if="show_debug"
-    >
-      <h1>Debug</h1>
-      <pre>{{ valuesAsJSON }}</pre>
-      <pre>{{ keysAsJSON }}</pre>
+              <template #append>
+                <v-btn
+                  color="grey-lighten-1"
+                  icon="mdi-delete-outline"
+                  variant="text"
+                  @click="removeKey(akey)"
+                />
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card>
+        <!--settings-->
+        <v-card>
+          <v-list
+            v-if="!show_history"
+            lines="one" 
+          >
+            <v-list-subheader inset>
+              Settings
+            </v-list-subheader>
+            <v-list-item
+              title="Continuous scan"
+              subtitle="Do not close the QR scanner after a scan"
+            >
+              <template #append>
+                <v-switch
+                  v-model="is_continuous_scan"
+                  color="success"
+                  hide-details
+                  @click="is_continuous_scan = !is_continuous_scan"
+                />
+              </template>
+            </v-list-item>
+            <v-list-item
+              title="Sync Cloud Storage"
+              subtitle="Sync the local cache with Telegram Cloud Storage"
+            >
+              <template #append>
+                <v-btn @click="loadStorage()">
+                  Sync
+                </v-btn>
+              </template>
+            </v-list-item>
+            <v-list-item
+              title="Show debug"
+              subtitle="Show debug information"
+            >
+              <template #append>
+                <v-switch
+                  v-model="show_debug"
+                  color="success"
+                  hide-details
+                  @click="show_debug = !show_debug"
+                />
+              </template>
+            </v-list-item>
+          </v-list>
+          <div
+            v-if="show_debug"
+          >
+            <h1>Debug</h1>
+            <pre>{{ valuesAsJSON }}</pre>
+            <pre>{{ keysAsJSON }}</pre>
+          </div>
+        </v-card>        
+      </v-card>
     </div>
     <div
       v-if="!is_telegram_client"
@@ -133,6 +173,7 @@ export default {
       code: null,
       is_url: false,
       url: null,
+      show_history: true,
       // Cloud storage
       cloud_storage_keys: [],
       cloud_storage_values: {},
@@ -166,8 +207,9 @@ export default {
     if (this.is_telegram_client && this.is_telegram_api_updated) {
       this.TWA.MainButton.show();
       //this.showQRScanner();
+      this.loadStorage();
     }
-    this.loadStorage();
+  
   },
   mounted() {
     this.TWA.ready();
@@ -273,17 +315,6 @@ export default {
       // light medium heavy rigid soft
       this.TWA.HapticFeedback.impactOccurred("rigid");
       this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
-      this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
-      this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
-      this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
-      this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
-      this.TWA.HapticFeedback.impactOccurred("heavy");
-      this.TWA.HapticFeedback.impactOccurred("rigid");
     },
     //copyCodeClipboard() {
     //  var Url = this.$refs.mylink;
@@ -314,6 +345,7 @@ b {
 h3 {
   color: var(--tg-theme-text-color, black);
 }
+/*
 button {
   background-color: var(--tg-theme-button-color, #008CBA);
   border: 5px;
@@ -324,12 +356,13 @@ button {
   text-decoration: none;
   display: inline-block;
   font-size: 15px;
-}
+}*/
 
-.icon-button {
+
+/* .icon-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 </style>
