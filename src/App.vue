@@ -1,7 +1,8 @@
 <template>
   <div id="main">
-    <!--v-if="is_telegram_client && is_telegram_api_updated"-->
-    <div>
+    <div
+      v-if="is_telegram_client && is_telegram_api_updated"
+    >
       <v-card
         class="mx-auto"
         max-width="600"
@@ -218,10 +219,8 @@ export default {
       last_code: null,
       show_history: true,
       // Cloud storage
-      //cloud_storage_keys: [],
-      //cloud_storage_values: {},
-      cloud_storage_keys: [ "1696492897779", "1696492893878", "1696492890069", "1696492865770" ],
-      cloud_storage_values: {"1696492897779": "geo:46.227638,2.213749", "1696492893878": "WIFI:S:mywifi;T:WPA;P:12345678;;", "1696492890069": "BEGIN:VCARD\nVERSION:2.1\nN:Doe;John\nFN:John Doe\nORG:Telegram\nTITLE:Dr\nTEL:+20345968753\nEMAIL:John.doe@mail.com\nADR:;;2 ABC street;London;London;16873;uk\nURL:www.telegram.org\nEND:VCARD\n", "1696492865770": "https://telegram.com" },
+      cloud_storage_keys: [],
+      cloud_storage_values: {},
       enriched_values: {},
       is_continuous_scan: false,
       show_debug: false,
