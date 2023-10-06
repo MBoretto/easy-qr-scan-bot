@@ -1,6 +1,6 @@
 # Easy QR code scan Telegram
 Scan QR codes with Telegram!
-![Scan QR codes with Telegram!](easyqrscanbot.jpg) ![Scan QR codes with Telegram!](qrscanner.jpg) 
+![Scan QR codes with Telegram!](images/easyqrscanbot.jpg) ![Scan QR codes with Telegram!](images/qrscanner.jpg) 
 
 The Telegram [Mini app API](https://core.telegram.org/bots/webapps) API let you use a QR scanner integrated in the Web App.  
 This repository contains the code of [@easyqrscanbot](https://t.me/easyqrscanbot)
@@ -10,7 +10,7 @@ Make sure that you have updated your Telegram App, the minimum required version 
 
 - Research @easyqrscanbot on Telegram and open a private chat.
 - Press the button called `Scan QR` in the bottom left corner
-![Scan QR button](startover.jpg)
+![Scan QR button](images/startover.jpg)
 
 - Start scanning QR codes!
 
