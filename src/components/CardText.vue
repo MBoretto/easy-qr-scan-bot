@@ -28,8 +28,8 @@ export default defineComponent({
   },
   props: {
     text: {
-      type:  String, // Object is a constructor for objects
-      required: true, // This is optional, but it makes the prop required
+      type:  String,
+      required: true,
     }
   },
   emits: [
@@ -45,7 +45,7 @@ export default defineComponent({
   },
   methods: {
     openLink(lat, lng) {
-        this.TWA.openLink('https://maps.google.com/?q=' + lat + ',' + lng);
+        this.TMA.openLink('https://maps.google.com/?q=' + lat + ',' + lng);
     },
   },
 });

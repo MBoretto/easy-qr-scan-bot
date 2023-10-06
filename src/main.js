@@ -14,7 +14,7 @@ const vuetify = createVuetify({
 })
 
 const app = createApp(App)
-
-app.config.globalProperties.TWA = window.Telegram.WebApp
+// binding Telegram Mini App functions
+app.config.globalProperties.TMA = window.Telegram.WebApp
 app.use(vuetify)
 app.mount('#app')

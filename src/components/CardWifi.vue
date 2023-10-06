@@ -34,8 +34,8 @@ export default defineComponent({
   },
   props: {
     data: {
-      type: Object, // Object is a constructor for objects
-      required: true, // This is optional, but it makes the prop required
+      type: Object,
+      required: true,
     },
   },
   emits: [

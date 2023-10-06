@@ -69,3 +69,16 @@ export function prepareVCard(data) {
   }
   return vcard_info;
 }
+
+export function detectCodeType(code) {
+  if (code.startsWith("geo:")) {
+    return "geo";
+  } else if (code.startsWith("WIFI:")) {
+    return "wifi";
+  } else if (code.startsWith("BEGIN:VCARD")) {
+    return "vcard";
+  } else if (code.startsWith("http")) {
+    return "url";
+  }
+  return "text";
+}
