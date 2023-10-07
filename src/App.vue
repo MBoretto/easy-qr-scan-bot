@@ -295,12 +295,10 @@ export default {
     getIconFromType(key) {
       // check if key exists
       if (!this.enriched_values[key]) {
-        console.log("key not found");
         return "mdi-text-box";
       }
       // check it key type exists
       if (!this.enriched_values[key]['type']) {
-        console.log("type not found");
         return "mdi-text-box";
       }
       let type = this.enriched_values[key]['type'];
@@ -321,34 +319,10 @@ export default {
 </script>
 
 <style scoped>
-/*
-bg_color            .
-secondary_bg_color  var(--tg-theme-secondary-bg-color)
-link_color          var(--tg-theme-link-color).
-*/
-#main {
-  background-color: var(--tg-theme-bg-color, white);
-  color: var(--tg-theme-text-color, black);
-  /*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
-  word-wrap: break-word;
-}
-b {
-  color: var(--tg-theme-hint-color, black);
-}
-h3 {
-  color: var(--tg-theme-text-color, black);
-}
-/*
-button {
-  background-color: var(--tg-theme-button-color, #008CBA);
-  border: 5px;
-  color: var(--tg-theme-button-text-color, black);
-  padding: 15px;
-  margin: 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-}*/
-
+  #main {
+    background-color: var(--tg-theme-bg-color, white);
+    color: var(--tg-theme-text-color, black);
+    /*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
+    word-wrap: break-word;
+  }
 </style>
