@@ -77,8 +77,8 @@
       v-if="show_debug"
     >
       <h1>Debug</h1>
-      <pre>{{ valuesAsJSON }}</pre>
       <pre>{{ keysAsJSON }}</pre>
+      <pre>{{ valuesAsJSON }}</pre>
       <pre>{{ enrichAsJSON }}</pre>
     </div>
   </v-card>
