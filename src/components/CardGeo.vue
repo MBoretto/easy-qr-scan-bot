@@ -13,6 +13,8 @@
       <v-spacer />
       <v-btn 
         size="large"
+        color="primary"
+        variant="tonal"
         @click="openLink(data.lat, data.lng)"
       >
         Open Location

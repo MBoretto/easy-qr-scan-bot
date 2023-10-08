@@ -2,7 +2,7 @@
   <v-btn
     color="red"
     icon="mdi-delete-outline"
-    variant="text"
+    variant="tonal"
     @click="$emit('remove-key')"
   />
 </template>

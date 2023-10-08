@@ -48,7 +48,7 @@
                     <div 
                       class="headline mb-1"
                     >
-                      {{ cloud_storage_values[akey] }}
+                      {{ limitLength(cloud_storage_values[akey], 35) }}
                     </div>
                     <div
                       class="text-subtitle-2 text-grey"
@@ -313,6 +313,12 @@ export default {
       } else {
         return "mdi-text-box";
       }
+    },
+    limitLength(value, max_length) {
+      if (value.length <= max_length) {
+        return value;
+      }
+      return value.substring(0, max_length) + "...";
     }
   }
 }
