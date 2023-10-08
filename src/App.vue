@@ -225,17 +225,10 @@ export default {
     addToStorage(value) {
       // generate a key based on the timestamp
       const timestamp = new Date().getTime();
-
-      // check if the value is longer than 4096 characters
-      if (value.length > 4096) {
-        this.TMA.showAlert('Error Value is longer than 4096 characters');
-        return;
-      }
       this.TMA.CloudStorage.setItem(timestamp, value);
       // convert timestamp in string and add it to the array
       this.cloud_storage_keys.unshift(timestamp.toString());
       this.cloud_storage_values[timestamp] = value;
-      //this.TMA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
       return timestamp;
     },
     // Event Callback
@@ -255,6 +248,11 @@ export default {
     },
     processQRCode(data) {
       // This function is called every time the scanner recognise a QR code
+      // check if the QR code text is longer than 4096 characters
+      if (data.data.length > 4096) {
+        this.TWA.showAlert('Error cannot store QR codes longer than 4096 characters');
+        return;
+      }
       // avoids to scan the same code twice in continuous scan mode
       if (data.data == this.last_code) {
         return;
@@ -263,13 +261,15 @@ export default {
       this.hapticImpact();
       let key = this.addToStorage(data.data);
       this.enrichValue(key);
-      if (!this.is_continuous_scan) {
-        this.TMA.closeScanQrPopup();
-      }
+
       // Force to go back to the history screen if setting screen is open
       this.show_history = true;
       // Force to diplay the last element scanned
       this.expanded_panels = [0];
+
+      if (!this.is_continuous_scan) {
+        this.TMA.closeScanQrPopup();
+      }
     },
     hapticImpact() {
       // makes the phone vibrate when QR is detected

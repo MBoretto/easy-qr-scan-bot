@@ -12,7 +12,9 @@ Make sure that you have updated your Telegram App, the minimum required version 
 
 1. Search for `@easyqrscanbot` on Telegram and initiate a private chat.
 2. Tap the Menu Button in the bottom left corner (`Scan QR`).
-   <img src="images/startover.jpg" alt="Scan QR button" width="300">
+
+<img src="images/startover.jpg" alt="Scan QR button" width="300">
+
 3. Start scanning QR codes!
 
 ## Compatibility
@@ -35,22 +37,23 @@ Access the Mini App here: [Mini App Link](https://mboretto.github.io/easy-qr-sca
 ## For developers
 To get started with the project, follow these steps:
 1. Clone the repository:
-
+```
     git clone https://github.com/MBoretto/easy-qr-scan-bot.git
     cd easy-qr-scan-bot
+```
 
 2. Install the dependencies:
-
+```
     npm install
-
+```
 3. Build the project:
-
+```
     npm run build
-
+```
 To run code linting, use the following command:
-
+```
     npm run lint
-
+```
 Happy coding!
 
 
@@ -83,8 +86,6 @@ This is the easiest way to start the Mini App, as it requires you to configure t
 5. Press `Configure menu button`:
 <img src="images/step4.jpg" alt="Step 4" width="300">
 6. Insert the URL of your Mini App and specify the name for the Menu button.
-
-Now, you can start your Mini App from the Telegram Bot Menu.
 <img src="images/step5.jpg" alt="Step 5" width="300">
 
 Now, you can start your Mini App from the Telegram Bot Menu.
@@ -95,19 +96,19 @@ Now, you can start your Mini App from the Telegram Bot Menu.
 This method is useful during the development phase, allowing you to specify different URLs for the Mini App without reconfiguring the Telegram Bot Menu. However, it requires a running Telegram bot service. Follow these steps:
 
 1. Install the [python-telegram-bot library](https://python-telegram-bot.org/):
-
+```
     pip3 install python-telegram-bot --upgrade
-
+```
 2. Rename the `config-example.py` in `config.py`:
-
+```
     mv config-example.py config.py
-
+```
 3. Edit the `config.py` file and insert your Telegram Bot Token (you can get it from [@BotFather](https://t.me/BotFather) as `TOKEN`), `URL`, and `URL_TEST` links.
 
 4. Run the `web-app-launcher.py` script:
-
+```
     python3 web-app-launcher.py
-
+```
 5. Open your Telegram Bot and send the command `/start` (for the production link) or `/dev` (for the test link) to the bot.
 6. Press the button to open a version of the Mini App
 
@@ -140,8 +141,6 @@ After successfully scanning a QR code, the device will vibrate to provide feedba
 ## Debugging and Troubleshooting 
 In the Mini App's settings section, you'll find useful tools for debugging and development:
 
-In the Mini App's settings section, you'll find useful tools for debugging and development:
-
 - `Sync Cloud Storage` button: This syncs the Mini App's local storage with the Telegram Cloud Storage, equivalent to opening and closing the Mini App.
 - `Enrich QR codes` button: Triggers computation of raw QR codes for all scans.
 - Enabling `Show debug` displays:
@@ -150,7 +149,8 @@ In the Mini App's settings section, you'll find useful tools for debugging and d
     - List of locally enriched cloud storage keys-info
 
 
-
-
 ## Components
 The project makes use of [Vuetify](https://vuetifyjs.com/), a Vue Components Framework Library.
+
+## Licence
+The code is distrubuted under the [MIT License](./LICENSE)
