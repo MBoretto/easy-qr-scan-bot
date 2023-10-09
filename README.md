@@ -8,7 +8,7 @@ This repository contains the code of [@easyqrscanbot](https://t.me/easyqrscanbot
 a Telegram [Mini app](https://core.telegram.org/bots/webapps) to scan QR codes.  
 
 ## How to Use the QR Code Scanner
-Make sure that you have updated your Telegram App, the minimum required version of the Telegram API have is `6.9`.
+Make sure that you have updated your Telegram App, the minimum required version of the Telegram API is `6.9`.
 
 1. Search for `@easyqrscanbot` on Telegram and initiate a private chat.
 2. Tap the Menu Button in the bottom left corner (`Scan QR`).
@@ -38,21 +38,21 @@ Access the Mini App here: [Mini App Link](https://mboretto.github.io/easy-qr-sca
 To get started with the project, follow these steps:
 1. Clone the repository:
 ```
-    git clone https://github.com/MBoretto/easy-qr-scan-bot.git
-    cd easy-qr-scan-bot
+git clone https://github.com/MBoretto/easy-qr-scan-bot.git
+cd easy-qr-scan-bot
 ```
 
 2. Install the dependencies:
 ```
-    npm install
+npm install
 ```
 3. Build the project:
 ```
-    npm run build
+npm run build
 ```
 To run code linting, use the following command:
 ```
-    npm run lint
+npm run lint
 ```
 Happy coding!
 
@@ -97,17 +97,17 @@ This method is useful during the development phase, allowing you to specify diff
 
 1. Install the [python-telegram-bot library](https://python-telegram-bot.org/):
 ```
-    pip3 install python-telegram-bot --upgrade
+pip3 install python-telegram-bot --upgrade
 ```
 2. Rename the `config-example.py` in `config.py`:
 ```
-    mv config-example.py config.py
+mv config-example.py config.py
 ```
-3. Edit the `config.py` file and insert your Telegram Bot Token (you can get it from [@BotFather](https://t.me/BotFather) as `TOKEN`), `URL`, and `URL_TEST` links.
+3. Edit the `config.py` file and insert your Telegram Bot Token `TOKEN` (you can get it from [@BotFather](https://t.me/BotFather)), `URL`, and `URL_TEST` links.
 
 4. Run the `web-app-launcher.py` script:
 ```
-    python3 web-app-launcher.py
+python3 web-app-launcher.py
 ```
 5. Open your Telegram Bot and send the command `/start` (for the production link) or `/dev` (for the test link) to the bot.
 6. Press the button to open a version of the Mini App
@@ -116,7 +116,7 @@ Now, you can start and test your Mini App using using the test link.
 
 
 ## Data Model
-[Telegram Cloud Storage](https://core.telegram.org/bots/webapps#cloudstorage) is a key-value database accessible from any Telegram client. It allows you to store up to `1024` keys per user per bot, with each value having a limit of `4096` characters. Data is associated with the user's Telegram account and persists across devices. After scanning a QR code, the raw string is stored using the timestamp as the key.
+[Telegram Cloud Storage](https://core.telegram.org/bots/webapps#cloudstorage) is a key-value database accessible from any Telegram client. It allows you to store up to `1024` keys per user per bot, with each value having a limit of `4096` characters. Data is associated with the user's Telegram account and persists across devices. After scanning a QR code, the raw string is stored using the timestamp as key.
 
 The Mini App loads the full scan history on startup and stores it locally. Subsequent scans are stored both in the Telegram Cloud Storage and locally.
 
