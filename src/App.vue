@@ -143,7 +143,8 @@ export default {
       cloud_storage_values: {},
       enriched_values: {},
       is_continuous_scan: false,
-      expanded_panels: [0], // Set the first element to expanded by default
+      // Set the first element to expanded by default
+      expanded_panels: [0],
     };
   },
   created() {
